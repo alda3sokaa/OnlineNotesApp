@@ -1,70 +1,97 @@
 package com.app.frontend.components;
 
+import com.app.frontend.models.Note;
 import javafx.geometry.Insets;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-
 
 public class Sidebar {
     private BorderPane root;
-    private TextField searchFiled;
+    private TextField searchField;
     private VBox notesListContainer;
+    private Button newBtn;
 
-    public Sidebar(){
-        root=new BorderPane();
+    public Sidebar() {
+        root = new BorderPane();
+
+        root.getStyleClass().add("sidebar");
+
         buildTop();
         buildCenter();
         buildBottom();
     }
-    private void buildTop() {
 
-        Label title = new Label("OnlineAppNote");
-        searchFiled = new TextField();
-        searchFiled.setPromptText("Search");
+    private void buildTop() {
+        Label title = new Label("My Notes");
+
+        title.getStyleClass().add("app-title");
+
+        searchField = new TextField();
+        searchField.setPromptText("Search...");
+
+        searchField.getStyleClass().add("search-field");
+
         VBox topContainer = new VBox(10);
-        topContainer.getChildren().addAll(title,searchFiled);
-        topContainer.setPadding(new Insets(10,10,20,10));
+        topContainer.getChildren().addAll(title, searchField);
+        topContainer.setPadding(new Insets(15));
+
         root.setTop(topContainer);
     }
-    private void buildCenter(){
-        Button newBtn = new Button("New");
-        Button editBtn = new Button("Edit");
-        Button deleteBtn = new Button("Delete");
 
-        VBox buttonBar = new VBox(10, newBtn, editBtn, deleteBtn);
-        buttonBar.setPadding(new Insets(10));
+    private void buildCenter() {
+
+        newBtn = new Button("New Note +");
+        newBtn.setMaxWidth(Double.MAX_VALUE);
+
+        newBtn.getStyleClass().add("new-button");
 
         notesListContainer = new VBox(10);
         notesListContainer.setPadding(new Insets(10));
 
         ScrollPane scrollPane = new ScrollPane(notesListContainer);
         scrollPane.setFitToWidth(true);
-        scrollPane.setPrefHeight(200);
 
-        VBox centerBox = new VBox(10, buttonBar, scrollPane);
+        scrollPane.getStyleClass().add("notes-scroll-pane");
+
+        VBox centerBox = new VBox(15, newBtn, scrollPane);
+        centerBox.setPadding(new Insets(10));
+
         root.setCenter(centerBox);
-        for (int i = 1; i <= 20; i++) {
-            notesListContainer.getChildren().add(new Label("Note " + i));
-        }
 
+
+        addDummyData();
     }
-    private void buildBottom(){
-        Button settingsButton=new Button("Settings");
-        root.setBottom(settingsButton);
+
+    private void addDummyData() {
+        NoteCard cardRenderer = new NoteCard();
+
+
+        notesListContainer.getChildren().add(cardRenderer.createCard(new Note("Project Idea : Finish the JavaFX app UI.")));
+        notesListContainer.getChildren().add(cardRenderer.createCard(new Note("Shopping :Milk, Bread, Coffee.")));
+        notesListContainer.getChildren().add(cardRenderer.createCard(new Note("Gym:Leg day at 5 PM.")));
     }
-    public BorderPane getView(){
+
+    private void buildBottom() {
+        Button settingsButton = new Button("Settings");
+        settingsButton.setMaxWidth(Double.MAX_VALUE);
+
+        settingsButton.getStyleClass().add("settings-button");
+
+        VBox bottomBox = new VBox(settingsButton);
+        bottomBox.setPadding(new Insets(15));
+
+        root.setBottom(bottomBox);
+    }
+
+    public BorderPane getView() {
         return root;
     }
-    public VBox getNotesListContainer(){
-        return notesListContainer;
-    }
-    public TextField getSearchFiled(){
-        return searchFiled;
+
+    public Button getNewButton() {
+        return newBtn;
     }
 }
-//update
