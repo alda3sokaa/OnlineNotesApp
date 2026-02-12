@@ -24,7 +24,7 @@ public class MainApp extends Application {
         // UI DESIGN //
         BorderPane root = new BorderPane();
         root.setLeft(sidebar.getView());
-        root.setCenter(editor.getView());
+        //root.setCenter(editor.getView());
 
         // APPLICATION ICON //
         Image icon = new Image(getClass().getResourceAsStream("/NoteAppIcon.png"));
@@ -33,7 +33,7 @@ public class MainApp extends Application {
 
         // STAGE//
         Scene scene = new Scene (root,700,700,Color.rgb(10,10,20));
-        stage.setTitle("Notes Applaciton");
+        stage.setTitle("Notes Application");
         stage.setScene(scene);
         stage.show();
 
