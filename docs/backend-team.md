@@ -80,3 +80,23 @@ pom.xml
 - Add validation and error handling  
 - Improve database structure  
 - Final API cleanup and testing  
+
+
+# Backend Team - Week 1 Progress
+
+## Completed Tasks
+
+- Created controllers package  
+- Created services package  
+- Created models package  
+- Spring Boot application successfully started  
+- Port conflict issue resolved  
+- /hello endpoint tested and working  
+- Note model created (id, title, content, version)  
+- IdGenerator implemented using AtomicLong  
+- Basic CRUD structure implemented in NoteService  
+
+## Status
+
+Backend core structure is ready.  
+Week 1 tasks have been successfully completed.
