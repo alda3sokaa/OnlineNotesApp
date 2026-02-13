@@ -12,6 +12,8 @@ public class Editor {
     public Editor(){
         this.contentArea= new TextArea();
         this.contentArea.setWrapText(true);
+
+
     }
 
     public TextArea getView(){
