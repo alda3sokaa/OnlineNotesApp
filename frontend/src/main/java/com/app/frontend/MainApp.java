@@ -37,7 +37,11 @@ public class MainApp extends Application {
         ImageView imageView = new ImageView(icon);
 
         // STAGE//
-        Scene scene = new Scene (root,700,700,Color.rgb(10,10,20));
+        Scene scene = new Scene (root,700,700);
+        scene.getStylesheets().add(
+                MainApp.class.getResource("/style.css").toExternalForm()
+        );
+
         stage.setTitle("Notes Application");
         stage.setScene(scene);
         stage.show();
