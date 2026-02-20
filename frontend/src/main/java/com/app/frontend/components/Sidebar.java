@@ -1,22 +1,42 @@
 package main.java.com.app.frontend.components;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-
-import javax.swing.*;
-import java.util.Collection;
-
 
 public class Sidebar {
+    public static class NoteItem {
+        private String id;
+        private String title;
+
+        public NoteItem(String id, String title) {
+            this.id = id;
+            this.title = title;
+        }
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public String toString() {
+            return title;
+        }
+    }
     private BorderPane root;
-    private TextField searchFiled;
+    private TextField searchField;
     private VBox notesListContainer;
+    //private ObservableList<String>notes;
+    private ListView<NoteItem> listView;
+    private NoteSelectionListener listener;
+
+    public void setNoteSelectionListener(NoteSelectionListener listener) {
+        this.listener = listener;
+    }
 
     public Sidebar(){
         root=new BorderPane();
@@ -35,18 +55,20 @@ public class Sidebar {
 
         Button noteListBtn=new Button("Note list");
 
-        TextField searchFiled=new TextField();
-        searchFiled.setPromptText("Search");
-        notesListContainer=new VBox(10);
-        notesListContainer.setPadding(new Insets(10));
-        for(int i=1;i<=20;i++){
-            notesListContainer.getChildren().add(new Label("Note"+i));
-        }
-        ScrollPane scrollPane=new ScrollPane(notesListContainer);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setPrefHeight(200);
+        searchField=new TextField();
+        searchField.setPromptText("Search");
 
-        VBox noteContent=new VBox(10,searchFiled,scrollPane);
+        listView = new ListView<>();
+        listView.setPrefHeight(200);
+        
+        listView.setOnMouseClicked(event->{
+            NoteItem SelectedNote =listView.getSelectionModel().getSelectedItem();
+        if(SelectedNote !=null && listener!=null) {
+            listener.onNoteSelected(SelectedNote.getId());
+        }
+            });
+
+        VBox noteContent = new VBox(10, searchField, listView);
         noteContent.setPadding(new Insets(10));
 
         noteContent.setVisible(false);
@@ -77,8 +99,16 @@ public class Sidebar {
     public VBox getNotesListContainer(){
         return notesListContainer;
     }
-    public TextField getSearchFiled(){
-        return searchFiled;
+    public TextField getSearchField(){
+        return searchField;
+    }
+    public interface NoteSelectionListener{
+        void onNoteSelected(String noteId);
+    }
+    public void bindNotes(ObservableList<NoteItem>notesFromLogic){
+        listView.setItems(notesFromLogic);
     }
 }
-//update
+
+
+
