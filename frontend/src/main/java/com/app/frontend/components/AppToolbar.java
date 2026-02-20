@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
+
 public class AppToolbar extends HBox {
 
     private Button newBtn;

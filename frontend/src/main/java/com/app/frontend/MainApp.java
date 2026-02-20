@@ -12,15 +12,14 @@ import com.app.frontend.components.Sidebar;
 import com.app.frontend.components.Editor;
 import javafx.scene.layout.BorderPane;
 import java.util.Objects;
-
-
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.scene.control.Button;
 public class MainApp extends Application {
-
-
 
     @Override
     public void start(Stage stage) {
-        // OBJECTS //
+
         Sidebar sidebar = new Sidebar();
         Editor editor = new Editor();
         AppToolbar appToolbar = new AppToolbar();
@@ -35,12 +34,18 @@ public class MainApp extends Application {
         Image icon = new Image(getClass().getResourceAsStream("/NoteAppIcon.png"));
         stage.getIcons().add(icon);
         ImageView imageView = new ImageView(icon);
+        FontAwesomeIconView plusIcon =
+                new FontAwesomeIconView(FontAwesomeIcon.PLUS);
 
-        // STAGE//
+        plusIcon.getStyleClass().add("toolbar-icon");
+
+        Button plusBtn = new Button();
+        plusBtn.setGraphic(plusIcon);
+        plusBtn.getStyleClass().add("toolbar-button");
+
         Scene scene = new Scene (root,700,700);
         scene.getStylesheets().add(
-                MainApp.class.getResource("/style.css").toExternalForm()
-        );
+                MainApp.class.getResource("/style.css").toExternalForm());
 
         stage.setTitle("Notes Application");
         stage.setScene(scene);

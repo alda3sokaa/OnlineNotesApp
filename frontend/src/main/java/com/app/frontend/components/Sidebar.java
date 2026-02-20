@@ -1,15 +1,18 @@
-package main.java.com.app.frontend.components;
-
+package com.app.frontend.components;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.geometry.Pos;
 
-import javax.swing.*;
 import java.util.Collection;
 
 
@@ -22,7 +25,7 @@ public class Sidebar {
         root=new BorderPane();
         buildTop();
         buildCenter();
-        buildBottom();
+
     }
     private void buildTop() {
         Label title = new Label("OnlineAppNote");
@@ -33,7 +36,31 @@ public class Sidebar {
     }
     private void buildCenter(){
 
-        Button noteListBtn=new Button("Note list");
+
+        Region spacer =new Region();
+        VBox.setVgrow(spacer,Priority.ALWAYS);
+        FontAwesomeIconView settingsIcon =
+                new FontAwesomeIconView(FontAwesomeIcon.GEAR);
+
+        settingsIcon.setGlyphSize(26);
+        settingsIcon.getStyleClass().add("sidebar-icon");
+
+        Button settingsButton = new Button();
+        settingsButton.setGraphic(settingsIcon);
+        settingsButton.getStyleClass().add("sidebar-button");
+
+
+
+        Button noteListBtn=new Button();
+        FontAwesomeIconView noteIcon =
+                new FontAwesomeIconView(FontAwesomeIcon.FILE.FILE_TEXT);
+
+        noteIcon.setGlyphSize(26);
+        noteIcon.getStyleClass().add("sidebar-icon");
+
+        noteListBtn.setGraphic(noteIcon);
+        noteListBtn.getStyleClass().add("sidebar-button");
+
 
         TextField searchFiled=new TextField();
         searchFiled.setPromptText("Search");
@@ -56,21 +83,53 @@ public class Sidebar {
             noteContent.setVisible(!isVisible);
             noteContent.setManaged(!isVisible);
         });
-        Button newBtn = new Button("New");
-        Button deleteBtn = new Button("Delete");
-        Button saveBtn = new Button("Save");
-        Button shareBtn = new Button("Share");
-        VBox buttonBar = new VBox(10, newBtn, deleteBtn,saveBtn,shareBtn);
+        FontAwesomeIconView newIcon =
+                new FontAwesomeIconView(FontAwesomeIcon.PLUS);
+        newIcon.setGlyphSize(26);
+        newIcon.getStyleClass().add("sidebar-icon");
+
+        Button newBtn = new Button();
+        newBtn.setGraphic(newIcon);
+        newBtn.getStyleClass().add("sidebar-button");
+
+
+        FontAwesomeIconView saveIcon =
+                new FontAwesomeIconView(FontAwesomeIcon.SAVE);
+        saveIcon.setGlyphSize(26);
+        saveIcon.getStyleClass().add("sidebar-icon");
+
+        Button saveBtn = new Button();
+        saveBtn.setGraphic(saveIcon);
+        saveBtn.getStyleClass().add("sidebar-button");
+
+        FontAwesomeIconView deleteIcon =
+                new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+        deleteIcon.setGlyphSize(26);
+        deleteIcon.getStyleClass().add("sidebar-icon");
+
+        Button deleteBtn = new Button();
+        deleteBtn.setGraphic(deleteIcon);
+        deleteBtn.getStyleClass().add("sidebar-button");
+
+        FontAwesomeIconView shareIcon =
+                new FontAwesomeIconView(FontAwesomeIcon.SHARE);
+        shareIcon.setGlyphSize(26);
+        shareIcon.getStyleClass().add("sidebar-icon");
+
+        Button shareBtn = new Button();
+        shareBtn.setGraphic(shareIcon);
+        shareBtn.getStyleClass().add("sidebar-button");
+        VBox buttonBar = new VBox(10,noteListBtn, newBtn, deleteBtn,saveBtn,shareBtn,spacer,settingsButton);
         buttonBar.setPadding(new Insets(10));
 
+
+
+
         VBox centerBox=new VBox(15);
-        centerBox.getChildren().addAll(noteListBtn,noteContent,buttonBar);
+        centerBox.getChildren().addAll(noteContent,buttonBar);
         root.setCenter(centerBox);
     }
-    private void buildBottom(){
-        Button settingsButton=new Button("Settings");
-        root.setBottom(settingsButton);
-    }
+
     public BorderPane getView(){
         return root;
     }
@@ -81,4 +140,3 @@ public class Sidebar {
         return searchFiled;
     }
 }
-//update

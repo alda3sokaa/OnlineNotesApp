@@ -20,3 +20,23 @@
     -fx-control-inner-background: #2a2a2a;
     -fx-text-fill: white;
 }
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 10;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-icon {
+    -fx-fill: #bdbdbd;
+    -fx-font-size: 18px;
+}
+
+.sidebar-button:hover .sidebar-icon {
+    -fx-fill: white;
+}
+
