@@ -5,17 +5,30 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
+import javafx.scene.control.ScrollPane;
 
 public class Editor {
     private TextArea contentArea;
+    private ScrollPane scrollPane;
 
     public Editor(){
         this.contentArea= new TextArea();
         this.contentArea.setWrapText(true);
+
+        this.scrollPane = new ScrollPane(contentArea);
+        this.scrollPane.setFitToWidth(true);
+        this.scrollPane.setFitToHeight(true);
+
+        this.contentArea.textProperty().addListener((observable ,oldValue, newValue) -> {
+            syncWithLogic(newValue);
+        });
+    }
+    private void syncWithLogic(String text) {
+        System.out.println("Syncing text: " +text);
     }
 
-    public TextArea getView(){
-        return contentArea;
+    public ScrollPane getView() {
+        return scrollPane;
     }
 
     public String getText(){
