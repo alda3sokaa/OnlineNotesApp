@@ -1,29 +1,23 @@
 package com.app.frontend.models;
 
+import java.time.LocalDateTime;
+
 public class Note {
-    private Long id;
     private String title;
     private String content;
-    private int version;
+    private LocalDateTime date;
 
-    // Constructor
-    public Note() {}
-
-    public Note(String title, String content) {
+    public Note(String title) {
         this.title = title;
         this.content = content;
+        this.date = LocalDateTime.now(); // بياخد وقت النظام الحالي
     }
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-
-    public int getVersion() { return version; }
-    public void setVersion(int version) { this.version = version; }
+    public String getTitle() {
+        return title;
+    }
+    public String getContent() {return content;}
+    public LocalDateTime getDate() {
+        return date;
+    }
 }

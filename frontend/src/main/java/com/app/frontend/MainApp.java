@@ -1,5 +1,6 @@
 package com.app.frontend;
 
+import com.app.frontend.components.AppToolbar;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -15,14 +16,18 @@ import java.util.Objects;
 
 public class MainApp extends Application {
 
+
+
     @Override
     public void start(Stage stage) {
-        // 1.OBJECTS //
+        // OBJECTS //
         Sidebar sidebar = new Sidebar();
         Editor editor = new Editor();
+        AppToolbar appToolbar = new AppToolbar();
 
         // UI DESIGN //
         BorderPane root = new BorderPane();
+        root.setTop(appToolbar);
         root.setLeft(sidebar.getView());
         root.setCenter(editor.getView());
 
@@ -32,8 +37,12 @@ public class MainApp extends Application {
         ImageView imageView = new ImageView(icon);
 
         // STAGE//
-        Scene scene = new Scene (root,700,700,Color.rgb(10,10,20));
-        stage.setTitle("Notes Applaciton");
+        Scene scene = new Scene (root,700,700);
+        scene.getStylesheets().add(
+                MainApp.class.getResource("/style.css").toExternalForm()
+        );
+
+        stage.setTitle("Notes Application");
         stage.setScene(scene);
         stage.show();
 
