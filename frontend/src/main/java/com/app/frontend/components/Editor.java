@@ -34,7 +34,7 @@ public class Editor {
     public String getText(){
         return contentArea.getText();
     }
-
+//
     public void setText(String text){
         contentArea.setText(text);
     }
