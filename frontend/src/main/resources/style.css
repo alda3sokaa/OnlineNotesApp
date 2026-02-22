@@ -39,4 +39,10 @@
 .sidebar-button:hover .sidebar-icon {
     -fx-fill: white;
 }
+.tooltip {
+    -fx-font-size: 14px;
+    -fx-background-color: #333333;
+    -fx-text-fill: white;
+    -fx-padding: 8 12 8 12;
+}
 

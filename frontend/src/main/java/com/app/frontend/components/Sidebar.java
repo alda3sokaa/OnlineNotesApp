@@ -2,18 +2,16 @@ package com.app.frontend.components;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.Insets;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 import javafx.geometry.Pos;
-
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
 import java.util.Collection;
+import javafx.geometry.Bounds;
 
 
 public class Sidebar {
@@ -27,6 +25,7 @@ public class Sidebar {
         buildCenter();
 
     }
+
     private void buildTop() {
         Label title = new Label("OnlineAppNote");
         VBox topContainer = new VBox(10);
@@ -53,7 +52,7 @@ public class Sidebar {
 
         Button noteListBtn=new Button();
         FontAwesomeIconView noteIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.FILE.FILE_TEXT);
+                new FontAwesomeIconView(FontAwesomeIcon.LIST);
 
         noteIcon.setGlyphSize(26);
         noteIcon.getStyleClass().add("sidebar-icon");
@@ -84,7 +83,7 @@ public class Sidebar {
             noteContent.setManaged(!isVisible);
         });
         FontAwesomeIconView newIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.PLUS);
+                new FontAwesomeIconView(FontAwesomeIcon.FILE_TEXT);
         newIcon.setGlyphSize(26);
         newIcon.getStyleClass().add("sidebar-icon");
 
@@ -103,16 +102,18 @@ public class Sidebar {
         saveBtn.getStyleClass().add("sidebar-button");
 
         FontAwesomeIconView deleteIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.TRASH);
+                new FontAwesomeIconView(FontAwesomeIcon.ERASER);
         deleteIcon.setGlyphSize(26);
         deleteIcon.getStyleClass().add("sidebar-icon");
+
 
         Button deleteBtn = new Button();
         deleteBtn.setGraphic(deleteIcon);
         deleteBtn.getStyleClass().add("sidebar-button");
 
+
         FontAwesomeIconView shareIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.SHARE);
+                new FontAwesomeIconView(FontAwesomeIcon.USER);
         shareIcon.setGlyphSize(26);
         shareIcon.getStyleClass().add("sidebar-icon");
 
@@ -128,7 +129,36 @@ public class Sidebar {
         VBox centerBox=new VBox(15);
         centerBox.getChildren().addAll(noteContent,buttonBar);
         root.setCenter(centerBox);
+
+
+        addFixedTooltip(noteListBtn, "Note List");
+        addFixedTooltip(deleteBtn, "Delete");
+        addFixedTooltip(saveBtn, "Save");
+        addFixedTooltip(newBtn, "New");
+        addFixedTooltip(shareBtn, "Share");
+        addFixedTooltip(settingsButton, "Settings");
+
     }
+    private void addFixedTooltip(Button btn, String text) {
+
+        Tooltip tooltip = new Tooltip(text);
+        tooltip.setShowDelay(Duration.ZERO);
+        tooltip.setHideDelay(Duration.ZERO);
+        tooltip.setShowDuration(Duration.INDEFINITE);
+
+        btn.setOnMouseEntered(e -> {
+
+            Bounds bounds = btn.localToScreen(btn.getBoundsInLocal());
+
+            double x = bounds.getMaxX() + 8;
+            double y = bounds.getMinY() + (bounds.getHeight() / 2);
+
+            tooltip.show(btn, x, y);
+        });
+
+        btn.setOnMouseExited(e -> tooltip.hide());
+    }
+
 
     public BorderPane getView(){
         return root;
