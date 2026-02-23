@@ -7,7 +7,7 @@
 }
 
 .button {
-    -fx-background-color: #2d2d2d;
+    -fx-background-color: #1e1e1e;
     -fx-text-fill: white;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .sidebar-button {
-    -fx-background-color: transparent;
+
     -fx-cursor: hand;
     -fx-padding: 10;
 }
@@ -41,7 +41,7 @@
 }
 .tooltip {
     -fx-font-size: 14px;
-    -fx-background-color: #333333;
+
     -fx-text-fill: white;
     -fx-padding: 8 12 8 12;
 }

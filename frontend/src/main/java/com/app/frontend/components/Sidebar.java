@@ -154,9 +154,6 @@ public class Sidebar {
         VBox buttonBar = new VBox(10,noteListBtn, newBtn, deleteBtn,saveBtn,shareBtn,spacer,settingsButton);
         buttonBar.setPadding(new Insets(10));
 
-
-
-
         VBox centerBox=new VBox(15);
         centerBox.getChildren().addAll(noteContent,buttonBar);
         root.setCenter(centerBox);
