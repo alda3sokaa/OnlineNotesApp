@@ -1,4 +1,5 @@
-package main.java.com.app.frontend.components;
+package com.app.frontend.components;
+
 
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
