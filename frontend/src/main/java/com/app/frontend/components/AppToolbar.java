@@ -4,7 +4,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
-
 public class AppToolbar extends HBox {
 
     private Button newBtn;
@@ -31,15 +30,8 @@ public class AppToolbar extends HBox {
         this.setPadding(new Insets(10));
     }
 
-    public Button getNewBtn(){
-        return newBtn;
-    }
-
-    public Button getSaveBtn() {
-        return saveBtn;
-    }
-
-    public Button getDeleteBtn() {
-        return deleteBtn;
-    }
+    // Getters عشان نقدر نربطهم بالمنطق لاحقاً
+    public Button getNewBtn(){ return newBtn; }
+    public Button getSaveBtn() { return saveBtn; }
+    public Button getDeleteBtn() { return deleteBtn; }
 }

@@ -1,41 +1,47 @@
-
 package com.app.frontend.components;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.Priority;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-import javafx.scene.control.ScrollPane;
-
 public class Editor {
+    private VBox view;
+    private TextField titleField;
     private TextArea contentArea;
-    private ScrollPane scrollPane;
 
-    public Editor(){
-        this.contentArea= new TextArea();
-        this.contentArea.setWrapText(true);
+    public Editor() {
+        titleField = new TextField();
+        titleField.setPromptText("Note Title ... ");
 
-        this.scrollPane = new ScrollPane(contentArea);
-        this.scrollPane.setFitToWidth(true);
-        this.scrollPane.setFitToHeight(true);
+        titleField.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10px; -fx-text-fill: #a8a4a4; -fx-prompt-text-fill: #aaaaaa;");
 
-        this.contentArea.textProperty().addListener((observable ,oldValue, newValue) -> {
-            syncWithLogic(newValue);
-        });
-    }
-    private void syncWithLogic(String text) {
-        System.out.println("Syncing text: " +text);
-    }
+        contentArea = new TextArea();
+        contentArea.setPromptText("Write your note ... ");
+        contentArea.setWrapText(true);
+        contentArea.setPrefHeight(500);
 
-    public ScrollPane getView() {
-        return scrollPane;
+        contentArea.setStyle("-fx-font-size: 14px; -fx-text-fill: #ffffff; -fx-prompt-text-fill: #aaaaaa; -fx-control-inner-background: #2b2b2b;");
+
+        view = new VBox(15, titleField, contentArea);
+        view.setPadding(new Insets(20));
+        // توحيد لون الخلفية للمحرر كامل
+        view.setStyle("-fx-background-color: #2b2b2b;");
     }
 
-    public String getText(){
-        return contentArea.getText();
+    public VBox getView() { return view; }
+
+    // 👇 هدول الدوال اللي رح يخلونا نتحكم بالنص من برا المحرر
+    public String getTitle() { return titleField.getText(); }
+    public String getContent() { return contentArea.getText(); }
+
+    public void setNote(String title, String content) {
+        titleField.setText(title);
+        contentArea.setText(content);
     }
-//
-    public void setText(String text){
-        contentArea.setText(text);
+
+    public void clear() {
+        titleField.clear();
+        contentArea.clear();
     }
 }
