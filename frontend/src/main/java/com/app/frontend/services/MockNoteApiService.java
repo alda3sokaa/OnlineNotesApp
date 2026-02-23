@@ -4,14 +4,14 @@ import com.app.frontend.models.NoteResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-// هاد الكلاس بيشتغل كسيرفر محلي (بالميموري) لتمشية الشغل
+
 public class MockNoteApiService implements NoteApiService {
 
     private List<NoteResponse> fakeDatabase = new ArrayList<>();
     private long idCounter = 1;
 
     public MockNoteApiService() {
-        // 👇 هاي الملاحظات الوهمية رح تظهر بالشاشة أول ما يشتغل التطبيق
+
         createNote(1L, "ملاحظة الجامعة", "توزيع المهام بين أعضاء الفريق");
         createNote(1L, "مشروع الجافا", "الانتهاء من ربط الواجهات اليوم!");
     }

@@ -30,7 +30,6 @@ public class AppToolbar extends HBox {
         this.setPadding(new Insets(10));
     }
 
-    // Getters عشان نقدر نربطهم بالمنطق لاحقاً
     public Button getNewBtn(){ return newBtn; }
     public Button getSaveBtn() { return saveBtn; }
     public Button getDeleteBtn() { return deleteBtn; }

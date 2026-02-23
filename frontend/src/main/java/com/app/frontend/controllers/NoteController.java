@@ -44,7 +44,6 @@ public class NoteController {
         btnDelete.setDisable(!noteActive);
     }
 
-    // دوال فاضية رح تعبيها أنت لاحقاً لتربط مع المحرر
     private void clearForm() {}
     private void saveNote() {}
     private void deleteNote() {}

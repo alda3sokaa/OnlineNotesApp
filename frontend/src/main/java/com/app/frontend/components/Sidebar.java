@@ -39,7 +39,6 @@ public class Sidebar {
     private ListView<NoteItem> listView;
     private NoteSelectionListener listener;
 
-    // 👇 1. طلعنا الأزرار لفوق عشان MainApp يقدر يوصلهم 👇
     private Button newBtn;
     private Button saveBtn;
     private Button deleteBtn;
@@ -87,7 +86,7 @@ public class Sidebar {
         listView = new ListView<>();
         listView.setPrefHeight(200);
 
-        // الربط مع كلاس ريان (NoteCard)
+
         listView.setCellFactory(param -> new ListCell<NoteItem>() {
             @Override
             protected void updateItem(NoteItem item, boolean empty) {
@@ -120,31 +119,31 @@ public class Sidebar {
             noteContent.setManaged(!isVisible);
         });
 
-        // زر New
+        //  New
         FontAwesomeIconView newIcon = new FontAwesomeIconView(FontAwesomeIcon.FILE_TEXT);
         newIcon.setGlyphSize(26);
         newIcon.getStyleClass().add("sidebar-icon");
-        newBtn = new Button(); // 👈 لاحظ شلنا كلمة Button من هون
+        newBtn = new Button();
         newBtn.setGraphic(newIcon);
         newBtn.getStyleClass().add("sidebar-button");
 
-        // زر Save
+        //  Save
         FontAwesomeIconView saveIcon = new FontAwesomeIconView(FontAwesomeIcon.SAVE);
         saveIcon.setGlyphSize(26);
         saveIcon.getStyleClass().add("sidebar-icon");
-        saveBtn = new Button(); // 👈 وهون كمان
+        saveBtn = new Button();
         saveBtn.setGraphic(saveIcon);
         saveBtn.getStyleClass().add("sidebar-button");
 
-        // زر Delete
+        //  Delete
         FontAwesomeIconView deleteIcon = new FontAwesomeIconView(FontAwesomeIcon.ERASER);
         deleteIcon.setGlyphSize(26);
         deleteIcon.getStyleClass().add("sidebar-icon");
-        deleteBtn = new Button(); // 👈 وهون كمان
+        deleteBtn = new Button();
         deleteBtn.setGraphic(deleteIcon);
         deleteBtn.getStyleClass().add("sidebar-button");
 
-        // زر Share
+        //  Share
         FontAwesomeIconView shareIcon = new FontAwesomeIconView(FontAwesomeIcon.USER);
         shareIcon.setGlyphSize(26);
         shareIcon.getStyleClass().add("sidebar-icon");
@@ -187,7 +186,6 @@ public class Sidebar {
     public VBox getNotesListContainer(){ return notesListContainer; }
     public TextField getSearchField(){ return searchField; }
 
-    // 👇 2. هدول الـ Getters اللي رح يستخدمهم MainApp عشان يبرمج الأزرار 👇
     public Button getNewBtn() { return newBtn; }
     public Button getSaveBtn() { return saveBtn; }
     public Button getDeleteBtn() { return deleteBtn; }

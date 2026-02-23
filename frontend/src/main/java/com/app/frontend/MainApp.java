@@ -19,7 +19,7 @@ import java.util.List;
 public class MainApp extends Application {
 
     private NoteApiService apiService;
-    private ObservableList<Sidebar.NoteItem> items; // نقلناها لهون عشان نقدر نحدثها
+    private ObservableList<Sidebar.NoteItem> items;
 
     @Override
     public void init() throws Exception {
@@ -33,12 +33,12 @@ public class MainApp extends Application {
         Editor editor = new Editor();
         AppToolbar appToolbar = new AppToolbar();
 
-        // 1. جلب البيانات عند التشغيل
+
         items = FXCollections.observableArrayList();
         refreshList(sidebar);
 
         sidebar.getNewBtn().setOnAction(e -> {
-            editor.clear(); // تفريغ المحرر
+            editor.clear();
             System.out.println("📝 جاهز لكتابة ملاحظة جديدة!");
         });
 
@@ -46,10 +46,10 @@ public class MainApp extends Application {
             String title = editor.getTitle();
             String content = editor.getContent();
 
-            if (!title.isEmpty()) { // التأكد إن العنوان مو فاضي
-                apiService.createNote(1L, title, content); // الحفظ بالسيرفر الوهمي
-                refreshList(sidebar); // تحديث القائمة الجانبية فوراً
-                editor.clear(); // تفريغ المحرر بعد الحفظ
+            if (!title.isEmpty()) {
+                apiService.createNote(1L, title, content);
+                refreshList(sidebar);
+                editor.clear();
                 System.out.println("✅ تم الحفظ بنجاح!");
             } else {
                 System.out.println("⚠️ لا يمكن حفظ ملاحظة بدون عنوان!");
@@ -60,7 +60,7 @@ public class MainApp extends Application {
             List<NoteResponse> allNotes = apiService.getAllNotes();
             for (NoteResponse note : allNotes) {
                 if (note.getId().toString().equals(noteId)) {
-                    editor.setNote(note.getTitle(), note.getContent()); // عرضها في المحرر
+                    editor.setNote(note.getTitle(), note.getContent());
                     System.out.println("📖 تم فتح: " + note.getTitle());
                     break;
                 }
@@ -79,7 +79,7 @@ public class MainApp extends Application {
             stage.getIcons().add(icon);
         } catch (Exception e) {}
 
-        Scene scene = new Scene (root, 900, 700); // كبرت الشاشة شوي لترتاح بالكتابة
+        Scene scene = new Scene (root, 900, 700);
         try {
             scene.getStylesheets().add(MainApp.class.getResource("/style.css").toExternalForm());
         } catch (Exception e) {}
@@ -89,7 +89,6 @@ public class MainApp extends Application {
         stage.show();
     }
 
-    // دالة مساعدة لتحديث القائمة الجانبية بسلاسة
     private void refreshList(Sidebar sidebar) {
         items.clear();
         for (NoteResponse note : apiService.getAllNotes()) {

@@ -25,13 +25,11 @@ public class Editor {
 
         view = new VBox(15, titleField, contentArea);
         view.setPadding(new Insets(20));
-        // توحيد لون الخلفية للمحرر كامل
         view.setStyle("-fx-background-color: #2b2b2b;");
     }
 
     public VBox getView() { return view; }
 
-    // 👇 هدول الدوال اللي رح يخلونا نتحكم بالنص من برا المحرر
     public String getTitle() { return titleField.getText(); }
     public String getContent() { return contentArea.getText(); }
 
