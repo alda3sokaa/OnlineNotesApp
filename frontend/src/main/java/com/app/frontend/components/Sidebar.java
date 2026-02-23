@@ -1,210 +1,97 @@
 package com.app.frontend.components;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 
-import javafx.collections.ObservableList;
+import com.app.frontend.models.Note;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.Priority;
-import javafx.geometry.Pos;
-import javafx.scene.control.Tooltip;
-import javafx.util.Duration;
-import java.util.Collection;
-import javafx.geometry.Bounds;
-
 
 public class Sidebar {
-    public static class NoteItem {
-        private String id;
-        private String title;
-
-        public NoteItem(String id, String title) {
-            this.id = id;
-            this.title = title;
-        }
-        public String getId() {
-            return id;
-        }
-
-        @Override
-        public String toString() {
-            return title;
-        }
-    }
     private BorderPane root;
     private TextField searchField;
     private VBox notesListContainer;
-    //private ObservableList<String>notes;
-    private ListView<NoteItem> listView;
-    private NoteSelectionListener listener;
+    private Button newBtn;
 
-    public void setNoteSelectionListener(NoteSelectionListener listener) {
-        this.listener = listener;
-    }
+    public Sidebar() {
+        root = new BorderPane();
 
-    public Sidebar(){
-        root=new BorderPane();
+        root.getStyleClass().add("sidebar");
+
         buildTop();
         buildCenter();
-
+        buildBottom();
     }
+
     private void buildTop() {
-        Label title = new Label("OnlineAppNote");
+        Label title = new Label("My Notes");
+
+        title.getStyleClass().add("app-title");
+
+        searchField = new TextField();
+        searchField.setPromptText("Search...");
+
+        searchField.getStyleClass().add("search-field");
+
         VBox topContainer = new VBox(10);
-        topContainer.getChildren().add(title);
-        topContainer.setPadding(new Insets(10,10,20,10));
+        topContainer.getChildren().addAll(title, searchField);
+        topContainer.setPadding(new Insets(15));
+
         root.setTop(topContainer);
     }
-    private void buildCenter(){
 
+    private void buildCenter() {
 
-        Region spacer =new Region();
-        VBox.setVgrow(spacer,Priority.ALWAYS);
-        FontAwesomeIconView settingsIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.GEAR);
+        newBtn = new Button("New Note +");
+        newBtn.setMaxWidth(Double.MAX_VALUE);
 
-        settingsIcon.setGlyphSize(26);
-        settingsIcon.getStyleClass().add("sidebar-icon");
+        newBtn.getStyleClass().add("new-button");
 
-        Button settingsButton = new Button();
-        settingsButton.setGraphic(settingsIcon);
-        settingsButton.getStyleClass().add("sidebar-button");
+        notesListContainer = new VBox(10);
+        notesListContainer.setPadding(new Insets(10));
 
+        ScrollPane scrollPane = new ScrollPane(notesListContainer);
+        scrollPane.setFitToWidth(true);
 
+        scrollPane.getStyleClass().add("notes-scroll-pane");
 
-        Button noteListBtn=new Button();
-        FontAwesomeIconView noteIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.LIST);
+        VBox centerBox = new VBox(15, newBtn, scrollPane);
+        centerBox.setPadding(new Insets(10));
 
-        noteIcon.setGlyphSize(26);
-        noteIcon.getStyleClass().add("sidebar-icon");
-
-        noteListBtn.setGraphic(noteIcon);
-        noteListBtn.getStyleClass().add("sidebar-button");
-
-
-        searchField=new TextField();
-        searchField.setPromptText("Search");
-
-        listView = new ListView<>();
-        listView.setPrefHeight(200);
-
-        listView.setOnMouseClicked(event->{
-            NoteItem SelectedNote =listView.getSelectionModel().getSelectedItem();
-        if(SelectedNote !=null && listener!=null) {
-            listener.onNoteSelected(SelectedNote.getId());
-        }
-            });
-
-        VBox noteContent = new VBox(10, searchField, listView);
-        noteContent.setPadding(new Insets(10));
-
-        noteContent.setVisible(false);
-        noteContent.setManaged(false);
-        noteListBtn.setOnAction(e->{
-            boolean isVisible=noteContent.isVisible();
-            noteContent.setVisible(!isVisible);
-            noteContent.setManaged(!isVisible);
-        });
-        FontAwesomeIconView newIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.FILE_TEXT);
-        newIcon.setGlyphSize(26);
-        newIcon.getStyleClass().add("sidebar-icon");
-
-        Button newBtn = new Button();
-        newBtn.setGraphic(newIcon);
-        newBtn.getStyleClass().add("sidebar-button");
-
-
-        FontAwesomeIconView saveIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.SAVE);
-        saveIcon.setGlyphSize(26);
-        saveIcon.getStyleClass().add("sidebar-icon");
-
-        Button saveBtn = new Button();
-        saveBtn.setGraphic(saveIcon);
-        saveBtn.getStyleClass().add("sidebar-button");
-
-        FontAwesomeIconView deleteIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.ERASER);
-        deleteIcon.setGlyphSize(26);
-        deleteIcon.getStyleClass().add("sidebar-icon");
-
-
-        Button deleteBtn = new Button();
-        deleteBtn.setGraphic(deleteIcon);
-        deleteBtn.getStyleClass().add("sidebar-button");
-
-
-        FontAwesomeIconView shareIcon =
-                new FontAwesomeIconView(FontAwesomeIcon.USER);
-        shareIcon.setGlyphSize(26);
-        shareIcon.getStyleClass().add("sidebar-icon");
-
-        Button shareBtn = new Button();
-        shareBtn.setGraphic(shareIcon);
-        shareBtn.getStyleClass().add("sidebar-button");
-        VBox buttonBar = new VBox(10,noteListBtn, newBtn, deleteBtn,saveBtn,shareBtn,spacer,settingsButton);
-        buttonBar.setPadding(new Insets(10));
-
-        VBox centerBox=new VBox(15);
-        centerBox.getChildren().addAll(noteContent,buttonBar);
         root.setCenter(centerBox);
 
 
-        addFixedTooltip(noteListBtn, "Note List");
-        addFixedTooltip(deleteBtn, "Delete");
-        addFixedTooltip(saveBtn, "Save");
-        addFixedTooltip(newBtn, "New");
-        addFixedTooltip(shareBtn, "Share");
-        addFixedTooltip(settingsButton, "Settings");
-
-    }
-    private void addFixedTooltip(Button btn, String text) {
-
-        Tooltip tooltip = new Tooltip(text);
-        tooltip.setShowDelay(Duration.ZERO);
-        tooltip.setHideDelay(Duration.ZERO);
-        tooltip.setShowDuration(Duration.INDEFINITE);
-
-        btn.setOnMouseEntered(e -> {
-
-            Bounds bounds = btn.localToScreen(btn.getBoundsInLocal());
-
-            double x = bounds.getMaxX() + 8;
-            double y = bounds.getMinY() + (bounds.getHeight() / 2);
-
-            tooltip.show(btn, x, y);
-        });
-
-        btn.setOnMouseExited(e -> tooltip.hide());
+        addDummyData();
     }
 
+    private void addDummyData() {
+        NoteCard cardRenderer = new NoteCard();
 
-    public BorderPane getView(){
+
+        notesListContainer.getChildren().add(cardRenderer.createCard(new Note("Project Idea : Finish the JavaFX app UI.")));
+        notesListContainer.getChildren().add(cardRenderer.createCard(new Note("Shopping :Milk, Bread, Coffee.")));
+        notesListContainer.getChildren().add(cardRenderer.createCard(new Note("Gym:Leg day at 5 PM.")));
+    }
+
+    private void buildBottom() {
+        Button settingsButton = new Button("Settings");
+        settingsButton.setMaxWidth(Double.MAX_VALUE);
+
+        settingsButton.getStyleClass().add("settings-button");
+
+        VBox bottomBox = new VBox(settingsButton);
+        bottomBox.setPadding(new Insets(15));
+
+        root.setBottom(bottomBox);
+    }
+
+    public BorderPane getView() {
         return root;
     }
-    public VBox getNotesListContainer(){
-        return notesListContainer;
-    }
-    public TextField getSearchField(){
-        return searchField;
-    }
-    public interface NoteSelectionListener{
-        void onNoteSelected(String noteId);
-    }
-    public void bindNotes(ObservableList<NoteItem>notesFromLogic){
-        listView.setItems(notesFromLogic);
+
+    public Button getNewButton() {
+        return newBtn;
     }
 }
-
-
-
-
