@@ -19,6 +19,7 @@ public class Editor {
         this.titleField = new TextField();
         this.titleField.setPromptText("Subject title");
         this.titleField.setStyle("-fx-font-size: 28px;" +
+
                 "-fx-text-fill: white;" +
                 "-fx-background-color: transparent;" +
                 "-fx-border-color: transparent;" +
