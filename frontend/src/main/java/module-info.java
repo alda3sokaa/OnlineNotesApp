@@ -3,6 +3,8 @@ module com.app.frontend {
     requires javafx.fxml;
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
+    requires de.jensd.fx.glyphs.commons;
+    requires de.jensd.fx.glyphs.fontawesome;
 
 
     opens com.app.frontend to javafx.fxml;
