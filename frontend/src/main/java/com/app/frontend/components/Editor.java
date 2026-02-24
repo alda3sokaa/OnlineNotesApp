@@ -31,7 +31,7 @@ public class Editor {
         this.contentArea.setWrapText(true);
         this.contentArea.setStyle("-fx-font-size: 18px;" +
                 "-fx-text-fill: white;" +
-                "-fx-background-color: transparent;" +
+                "-fx-border-color: transparent;" +
                 "-fx-control-inner-background: transparent;" +
                 "-fx-background-insets: 0;" +
                 "-fx-background-radius: 0;" +
