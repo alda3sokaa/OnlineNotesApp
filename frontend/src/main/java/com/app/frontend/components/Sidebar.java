@@ -2,17 +2,19 @@ package com.app.frontend.components;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
-import javafx.geometry.Bounds;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 public class Sidebar {
 
     public static class NoteItem {
@@ -38,6 +40,7 @@ public class Sidebar {
     private VBox notesListContainer;
     private ListView<NoteItem> listView;
     private NoteSelectionListener listener;
+    private FilteredList<NoteItem> filteredNotes;
 
     private Button newBtn;
     private Button saveBtn;
@@ -51,6 +54,7 @@ public class Sidebar {
         root = new BorderPane();
         buildTop();
         buildCenter();
+        setupSearchFilter();
     }
 
     private void buildTop() {
@@ -151,6 +155,9 @@ public class Sidebar {
         shareBtn.setGraphic(shareIcon);
         shareBtn.getStyleClass().add("sidebar-button");
 
+        //pop-up
+        shareBtn.setOnAction(e-> openSharePopup());
+
         VBox buttonBar = new VBox(10, noteListBtn, newBtn, deleteBtn, saveBtn, shareBtn, spacer, settingsButton);
         buttonBar.setPadding(new Insets(10));
 
@@ -164,6 +171,54 @@ public class Sidebar {
         addFixedTooltip(newBtn, "New");
         addFixedTooltip(shareBtn, "Share");
         addFixedTooltip(settingsButton, "Settings");
+    }
+    //Pop-up
+    private void openSharePopup() {
+        Stage popupStage= new Stage();
+        popupStage.setTitle("Share");
+
+        popupStage.initOwner(root.getScene().getWindow());
+        popupStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+        VBox layout=new VBox(10);
+        layout.setPadding(new Insets(15));
+
+        Label label=new Label("Share with:");
+
+        TextField userField=new TextField();
+        userField.setPromptText("UserName");
+         //Error message
+        Label errorLabel = new Label();
+        userField.textProperty().addListener((obs, oldVal, newVal) -> {
+            errorLabel.setText("");
+        });
+
+        Button senBtn=new Button("Send");
+        userField.setOnAction(e -> senBtn.fire());
+
+        senBtn.setOnAction(e->{String user=userField.getText();
+        if(user==null|| user.trim().isEmpty()){
+            errorLabel.setText("Please enter a user");
+
+        }else{
+            System.out.println("Shared with:"+user);
+            popupStage.close();
+        }
+        });
+        layout.getChildren().addAll(label,userField,errorLabel,senBtn);
+
+        Scene scene=new Scene(layout,300,150);
+
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+                popupStage.close();
+            }
+        });
+
+        popupStage.setScene(scene);
+
+        popupStage.centerOnScreen();
+        popupStage.showAndWait();
     }
 
     private void addFixedTooltip(Button btn, String text) {
@@ -195,6 +250,21 @@ public class Sidebar {
     }
 
     public void bindNotes(ObservableList<NoteItem> notesFromLogic){
-        listView.setItems(notesFromLogic);
+        filteredNotes=new FilteredList<>(notesFromLogic,p->true);
+        listView.setItems(filteredNotes);
+
     }
-}
+    //SearchField
+    private void setupSearchFilter() {
+        searchField.textProperty().addListener((obs,oldValue,newValue) -> {
+            if (filteredNotes ==null) return;
+            filteredNotes.setPredicate(note -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                return note.toString().toLowerCase().contains(lowerCaseFilter);
+            });
+        });
+    }
+    }
