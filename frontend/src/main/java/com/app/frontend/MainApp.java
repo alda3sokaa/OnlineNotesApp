@@ -29,8 +29,9 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) {
 
-        Sidebar sidebar = new Sidebar();
+
         Editor editor = new Editor();
+        Sidebar sidebar = new Sidebar(editor);
         AppToolbar appToolbar = new AppToolbar();
 
 
@@ -50,9 +51,9 @@ public class MainApp extends Application {
                 apiService.createNote(1L, title, content);
                 refreshList(sidebar);
                 editor.clear();
-                System.out.println("✅ تم الحفظ بنجاح!");
+                System.out.println("Saved successfully!");
             } else {
-                System.out.println("⚠️ لا يمكن حفظ ملاحظة بدون عنوان!");
+                System.out.println("Cannot save a note without a title!");
             }
         });
 
@@ -61,7 +62,7 @@ public class MainApp extends Application {
             for (NoteResponse note : allNotes) {
                 if (note.getId().toString().equals(noteId)) {
                     editor.setNote(note.getTitle(), note.getContent());
-                    System.out.println("📖 تم فتح: " + note.getTitle());
+                    System.out.println("Opened: " + note.getTitle());
                     break;
                 }
             }
