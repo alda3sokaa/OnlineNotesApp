@@ -131,9 +131,11 @@ public class Editor {
         contentArea.setText(content);
     }
 
+    // 2. Update clear method to include word counter
     public void clear() {
         titleField.clear();
         contentArea.clear();
+        wordCountLabel.setText("words: 0");
     }
 
     public void showSaveAlert() {
@@ -186,4 +188,18 @@ public class Editor {
 
         aboutStage.show();
     }
+    // 1. Add the method called by the Sidebar's Save button.
+    public void saveNote() {
+        // Check if the title exists before saving.
+        if (titleField.getText().trim().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Cannot save a note without a title! ");
+            alert.showAndWait();
+        } else {
+            showSaveAlert();
+        }
+    }
+
 }

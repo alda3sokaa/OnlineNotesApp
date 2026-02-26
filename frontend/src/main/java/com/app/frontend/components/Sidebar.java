@@ -35,9 +35,20 @@ public class Sidebar {
     public static class NoteItem {
         private String id;
         private String title;
-        public NoteItem(String id, String title) { this.id = id; this.title = title; }
-        public String getId() { return id; }
-        @Override public String toString() { return title; }
+
+        public NoteItem(String id, String title) {
+            this.id = id;
+            this.title = title;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        public String toString() {
+            return title;
+        }
     }
 
     public Sidebar(Editor editor) {
@@ -51,7 +62,7 @@ public class Sidebar {
         this.listener = listener;
     }
 
-    public Sidebar(){
+    public Sidebar() {
         root = new BorderPane();
         buildTop();
         buildCenter();
@@ -96,14 +107,18 @@ public class Sidebar {
             @Override
             protected void updateItem(NoteItem item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null) { setGraphic(null); setText(null); }
-                else { setGraphic(new NoteCard(item)); }
+                if (empty || item == null) {
+                    setGraphic(null);
+                    setText(null);
+                } else {
+                    setGraphic(new NoteCard(item));
+                }
             }
         });
 
         listView.setOnMouseClicked(event -> {
             NoteItem selectedNote = listView.getSelectionModel().getSelectedItem();
-            if(selectedNote != null && listener != null) {
+            if (selectedNote != null && listener != null) {
                 listener.onNoteSelected(selectedNote.getId());
             }
         });
@@ -123,10 +138,7 @@ public class Sidebar {
         FontAwesomeIconView newIcon = new FontAwesomeIconView(FontAwesomeIcon.FILE_TEXT);
         newIcon.setGlyphSize(26);
         newIcon.getStyleClass().add("sidebar-icon");
-        newBtn = new Button();
-        newBtn.setGraphic(newIcon);
-        newBtn.getStyleClass().add("sidebar-button");
-
+        newBtn = createSidebarButton(FontAwesomeIcon.FILE_TEXT, "New Note");
         newBtn.setOnAction(e -> {
             if (editor != null) {
                 editor.clear();
@@ -165,7 +177,7 @@ public class Sidebar {
         shareBtn.setOnAction(e -> openSharePopup());
 
         //pop-up
-        shareBtn.setOnAction(e-> openSharePopup());
+        shareBtn.setOnAction(e -> openSharePopup());
         saveBtn = createSidebarButton(FontAwesomeIcon.SAVE, "Save");
         saveBtn.setOnAction(e -> {
             if (editor != null) editor.saveNote();
@@ -199,40 +211,41 @@ public class Sidebar {
 
     //Pop-up
     private void openSharePopup() {
-        Stage popupStage= new Stage();
+        Stage popupStage = new Stage();
         popupStage.setTitle("Share");
 
         popupStage.initOwner(root.getScene().getWindow());
         popupStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
 
-        VBox layout=new VBox(10);
+        VBox layout = new VBox(10);
         layout.setPadding(new Insets(15));
         layout.setStyle("-fx-background-color: #1e1e1e;");
-        Label label=new Label("Share with:");
+        Label label = new Label("Share with:");
         label.setStyle("-fx-text-fill: white;");
-        TextField userField=new TextField();
+        TextField userField = new TextField();
         userField.setPromptText("UserName");
-         //Error message
+        //Error message
         Label errorLabel = new Label();
         userField.textProperty().addListener((obs, oldVal, newVal) -> {
             errorLabel.setText("");
         });
 
-        Button senBtn=new Button("Send");
+        Button senBtn = new Button("Send");
         userField.setOnAction(e -> senBtn.fire());
 
-        senBtn.setOnAction(e->{String user=userField.getText();
-        if(user==null|| user.trim().isEmpty()){
-            errorLabel.setText("Please enter a user");
+        senBtn.setOnAction(e -> {
+            String user = userField.getText();
+            if (user == null || user.trim().isEmpty()) {
+                errorLabel.setText("Please enter a user");
 
-        }else{
-            System.out.println("Shared with:"+user);
-            popupStage.close();
-        }
+            } else {
+                System.out.println("Shared with:" + user);
+                popupStage.close();
+            }
         });
-        layout.getChildren().addAll(label,userField,errorLabel,senBtn);
+        layout.getChildren().addAll(label, userField, errorLabel, senBtn);
 
-        Scene scene=new Scene(layout,300,150);
+        Scene scene = new Scene(layout, 300, 150);
 
         scene.setOnKeyPressed(e -> {
             if (e.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
@@ -257,13 +270,25 @@ public class Sidebar {
     }
 
 
+    public BorderPane getView() {
+        return root;
+    }
 
-    public BorderPane getView() { return root; }
-    public Button getNewBtn() { return newBtn; }
-    public Button getSaveBtn() { return saveBtn; }
-    public Button getDeleteBtn() { return deleteBtn; }
+    public Button getNewBtn() {
+        return newBtn;
+    }
 
-    public interface NoteSelectionListener { void onNoteSelected(String noteId); }
+    public Button getSaveBtn() {
+        return saveBtn;
+    }
+
+    public Button getDeleteBtn() {
+        return deleteBtn;
+    }
+
+    public interface NoteSelectionListener {
+        void onNoteSelected(String noteId);
+    }
 
 
     public void bindNotes(ObservableList<NoteItem> notesFromLogic) {
