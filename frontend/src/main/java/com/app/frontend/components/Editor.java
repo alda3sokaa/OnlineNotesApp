@@ -173,7 +173,7 @@ public class Editor {
         Label teamLabel = new Label("Frontend:");
         teamLabel.setStyle("-fx-text-fill: #bdc3c7; -fx-font-size: 14px; -fx-font-weight: bold;");
 
-        Label membersLabel = new Label("1. Oubay Ajlouni \n2. Hassan Ibrahim\n3. Ale isa\n4. Sedra\n5. Liwaa Alnassar\n6. Hadi\n7. Rayan ");
+        Label membersLabel = new Label("1. Oubay Ajlouni \n2. Hassan Ibrahim\n3. Ale isa\n4. Sedra Sheıxh Alard\n5. Liwaa Alnassar\n6. Hadi\n7. Rayan ");
         membersLabel.setStyle("-fx-text-fill: #ecf0f1; -fx-font-size: 14px; -fx-line-spacing: 5;");
         membersLabel.setAlignment(Pos.CENTER);
 
