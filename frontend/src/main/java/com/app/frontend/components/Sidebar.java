@@ -4,18 +4,18 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.Priority;
+import javafx.geometry.Bounds;
 import javafx.util.Duration;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-
+import javafx.scene.control.Label;
 public class Sidebar {
 
     private BorderPane root;
@@ -49,6 +49,20 @@ public class Sidebar {
 
     public void setNoteSelectionListener(NoteSelectionListener listener) {
         this.listener = listener;
+    }
+
+    public Sidebar(){
+        root = new BorderPane();
+        buildTop();
+        buildCenter();
+        setupSearchFilter();
+    }
+
+    private void buildTop() {
+
+        VBox topContainer = new VBox(10);
+        topContainer.setPadding(new Insets(10, 10, 20, 10));
+        root.setTop(topContainer);
     }
 
     private void buildCenter() {
@@ -105,10 +119,20 @@ public class Sidebar {
             noteContent.setManaged(!isVisible);
         });
 
-        newBtn = createSidebarButton(FontAwesomeIcon.FILE_TEXT, "New");
-        saveBtn = createSidebarButton(FontAwesomeIcon.SAVE, "Save");
+        //  New
+        FontAwesomeIconView newIcon = new FontAwesomeIconView(FontAwesomeIcon.FILE_TEXT);
+        newIcon.setGlyphSize(26);
+        newIcon.getStyleClass().add("sidebar-icon");
+        newBtn = new Button();
+        newBtn.setGraphic(newIcon);
+        newBtn.getStyleClass().add("sidebar-button");
 
-
+        newBtn.setOnAction(e -> {
+            if (editor != null) {
+                editor.clear();
+                listView.getSelectionModel().clearSelection();
+            }
+        });
         deleteBtn = createSidebarButton(FontAwesomeIcon.ERASER, "Delete");
         deleteBtn.setOnAction(e -> {
             if (editor != null && editor.showDeleteConfirmation()) {
@@ -140,9 +164,16 @@ public class Sidebar {
         Button shareBtn = createSidebarButton(FontAwesomeIcon.USER, "Share");
         shareBtn.setOnAction(e -> openSharePopup());
 
+        //pop-up
+        shareBtn.setOnAction(e-> openSharePopup());
+        saveBtn = createSidebarButton(FontAwesomeIcon.SAVE, "Save");
+        saveBtn.setOnAction(e -> {
+            if (editor != null) editor.saveNote();
+        });
         VBox buttonBar = new VBox(10, noteListBtn, newBtn, deleteBtn, saveBtn, shareBtn, spacer, settingsButton);
         buttonBar.setPadding(new Insets(10));
         root.setCenter(new VBox(15, noteContent, buttonBar));
+
 
         addFixedTooltip(noteListBtn, "Note List");
         addFixedTooltip(settingsButton, "About App");
@@ -165,26 +196,53 @@ public class Sidebar {
         button.setOnMouseExited(e -> icon.setFill(Color.web(NORMAL_COLOR)));
     }
 
+
+    //Pop-up
     private void openSharePopup() {
-        Stage popupStage = new Stage();
+        Stage popupStage= new Stage();
         popupStage.setTitle("Share");
+
+        popupStage.initOwner(root.getScene().getWindow());
         popupStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-        VBox layout = new VBox(10);
+
+        VBox layout=new VBox(10);
         layout.setPadding(new Insets(15));
         layout.setStyle("-fx-background-color: #1e1e1e;");
-        Label label = new Label("Share with:");
+        Label label=new Label("Share with:");
         label.setStyle("-fx-text-fill: white;");
-        TextField userField = new TextField();
+        TextField userField=new TextField();
         userField.setPromptText("UserName");
+         //Error message
         Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: #e74c3c;");
-        Button sendBtn = new Button("Send");
-        sendBtn.setOnAction(e -> {
-            if(userField.getText().trim().isEmpty()) errorLabel.setText("Please enter a user");
-            else popupStage.close();
+        userField.textProperty().addListener((obs, oldVal, newVal) -> {
+            errorLabel.setText("");
         });
-        layout.getChildren().addAll(label, userField, errorLabel, sendBtn);
-        popupStage.setScene(new Scene(layout, 300, 150));
+
+        Button senBtn=new Button("Send");
+        userField.setOnAction(e -> senBtn.fire());
+
+        senBtn.setOnAction(e->{String user=userField.getText();
+        if(user==null|| user.trim().isEmpty()){
+            errorLabel.setText("Please enter a user");
+
+        }else{
+            System.out.println("Shared with:"+user);
+            popupStage.close();
+        }
+        });
+        layout.getChildren().addAll(label,userField,errorLabel,senBtn);
+
+        Scene scene=new Scene(layout,300,150);
+
+        scene.setOnKeyPressed(e -> {
+            if (e.getCode() == javafx.scene.input.KeyCode.ESCAPE) {
+                popupStage.close();
+            }
+        });
+
+        popupStage.setScene(scene);
+
+        popupStage.centerOnScreen();
         popupStage.showAndWait();
     }
 
@@ -198,6 +256,8 @@ public class Sidebar {
         btn.setOnMouseExited(e -> tooltip.hide());
     }
 
+
+
     public BorderPane getView() { return root; }
     public Button getNewBtn() { return newBtn; }
     public Button getSaveBtn() { return saveBtn; }
@@ -205,18 +265,23 @@ public class Sidebar {
 
     public interface NoteSelectionListener { void onNoteSelected(String noteId); }
 
+
     public void bindNotes(ObservableList<NoteItem> notesFromLogic) {
         filteredNotes = new FilteredList<>(notesFromLogic, p -> true);
         listView.setItems(filteredNotes);
     }
 
+
     private void setupSearchFilter() {
-        searchField.textProperty().addListener((obs, old, newValue) -> {
-            if (filteredNotes != null) {
-                filteredNotes.setPredicate(note ->
-                        newValue == null || newValue.isEmpty() || note.toString().toLowerCase().contains(newValue.toLowerCase())
-                );
-            }
+        searchField.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (filteredNotes == null) return;
+            filteredNotes.setPredicate(note -> {
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                String lowerCaseFilter = newValue.toLowerCase();
+                return note.toString().toLowerCase().contains(lowerCaseFilter);
+            });
         });
     }
 }
