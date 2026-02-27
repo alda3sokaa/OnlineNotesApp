@@ -10,7 +10,7 @@ public class Note {
     public Note(String title) {
         this.title = title;
         this.content = content;
-        this.date = LocalDateTime.now(); // بياخد وقت النظام الحالي
+        this.date = LocalDateTime.now();
     }
 
     public String getTitle() {

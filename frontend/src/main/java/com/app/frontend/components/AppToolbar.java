@@ -31,15 +31,7 @@ public class AppToolbar extends HBox {
         this.setPadding(new Insets(10));
     }
 
-    public Button getNewBtn(){
-        return newBtn;
-    }
-
-    public Button getSaveBtn() {
-        return saveBtn;
-    }
-
-    public Button getDeleteBtn() {
-        return deleteBtn;
-    }
+    public Button getNewBtn(){ return newBtn; }
+    public Button getSaveBtn() { return saveBtn; }
+    public Button getDeleteBtn() { return deleteBtn; }
 }
