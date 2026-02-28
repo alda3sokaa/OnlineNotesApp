@@ -14,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+
 import java.util.List;
 
 public class MainApp extends Application {
@@ -32,7 +33,10 @@ public class MainApp extends Application {
 
         Editor editor = new Editor();
         Sidebar sidebar = new Sidebar(editor);
-        AppToolbar appToolbar = new AppToolbar();
+        AppToolbar appToolbar = new AppToolbar(editor.getTextArea());
+
+
+
 
 
         items = FXCollections.observableArrayList();
@@ -72,8 +76,8 @@ public class MainApp extends Application {
         BorderPane root = new BorderPane();
         root.setTop(appToolbar);
         root.setLeft(sidebar.getView());
+         //root.setCenter(editor.getView());
         root.setCenter(editor.getView());
-
         // APPLICATION ICON //
         try {
             Image icon = new Image(getClass().getResourceAsStream("/NoteAppIcon.png"));
@@ -97,6 +101,8 @@ public class MainApp extends Application {
         }
         sidebar.bindNotes(items);
     }
+    //Toolbar
+
 
 
     public static void main(String[] args) {

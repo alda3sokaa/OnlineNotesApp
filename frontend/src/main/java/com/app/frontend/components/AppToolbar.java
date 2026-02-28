@@ -1,36 +1,36 @@
 package com.app.frontend.components;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.IndexRange;
 import javafx.scene.layout.HBox;
+import org.fxmisc.richtext.InlineCssTextArea;
 
 public class AppToolbar extends HBox {
 
-    private Button newBtn;
-    private Button saveBtn;
-    private Button deleteBtn;
+    private InlineCssTextArea textArea;
 
-    public AppToolbar() {
-        this.getStyleClass().add("app-toolbar");
+    public AppToolbar(InlineCssTextArea textArea) {
+        this.textArea = textArea;
 
-        newBtn = new Button("New");
-        newBtn.getStyleClass().add("toolbar-button");
+        // UNDERLINE BUTTON
+        Button underlineBtn = new Button("U");
 
-        saveBtn = new Button("Save");
-        saveBtn.getStyleClass().add("toolbar-button");
-        saveBtn.getStyleClass().add("save-button");
+        underlineBtn.setOnAction(e -> applyUnderline());
 
-        deleteBtn = new Button("Delete");
-        deleteBtn.getStyleClass().add("toolbar-button");
-        deleteBtn.getStyleClass().add("delete-button");
-
-        this.getChildren().addAll(newBtn, saveBtn, deleteBtn);
-
+        this.getChildren().add(underlineBtn);
         this.setSpacing(10);
-        this.setPadding(new Insets(10));
     }
 
-    public Button getNewBtn(){ return newBtn; }
-    public Button getSaveBtn() { return saveBtn; }
-    public Button getDeleteBtn() { return deleteBtn; }
+    private void applyUnderline() {
+        IndexRange selection = textArea.getSelection();
+
+        if (selection.getLength() == 0) return;
+
+        // Seçili alana underline uygula
+        textArea.setStyle(
+                selection.getStart(),
+                selection.getEnd(),
+                "-fx-underline: true;"
+        );
+    }
 }
