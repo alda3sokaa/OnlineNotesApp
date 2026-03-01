@@ -33,7 +33,7 @@ public class MainApp extends Application {
 
         Editor editor = new Editor();
         Sidebar sidebar = new Sidebar(editor);
-        AppToolbar appToolbar = new AppToolbar(editor.getTextArea());
+        AppToolbar appToolbar = new AppToolbar(editor);
 
 
 
