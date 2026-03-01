@@ -14,12 +14,13 @@ public class AppToolbar extends HBox {
     private InlineCssTextArea textArea;
 
     public AppToolbar(Editor editor) {
-        this.editor = editor;
+        this.editor =  editor;
+        this.textArea =  new InlineCssTextArea();
 
         // 1. زر التسطير (Underline)
         Button underlineBtn = new Button("U");
         underlineBtn.setStyle("-fx-underline: true; -fx-background-color: #333333; -fx-text-fill: white; -fx-cursor: hand; -fx-font-weight: bold;");
-        underlineBtn.setOnAction(e -> applyUnderline());
+        underlineBtn.setOnAction(e -> editor.applyUnderLine());
 
         // 2. زر الخط العريض (Bold)
         Button boldBtn = new Button("B");

@@ -180,6 +180,13 @@ public class Editor {
         contentArea.requestFocus(); // إرجاع المؤشر فوراً للمحرر
     }
 
+    public void applyUnderLine(){
+        IndexRange range = contentArea.getSelection();
+        if (range.getLength() > 0) {
+            contentArea.setStyle(range.getStart(), range.getEnd(), "-fx-underline : true ; -fx-fill: " + currentTextColor + ";");
+        }
+    }
+
     public void applyBold() {
         IndexRange range = contentArea.getSelection();
         if(range.getLength() > 0) {
