@@ -1,8 +1,8 @@
 package com.app.frontend;
 
 import com.app.frontend.components.AppToolbar;
-import com.app.frontend.components.Sidebar;
 import com.app.frontend.components.Editor;
+import com.app.frontend.components.Sidebar;
 import com.app.frontend.models.NoteResponse;
 import com.app.frontend.services.MockNoteApiService;
 import com.app.frontend.services.NoteApiService;
@@ -11,9 +11,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+
 import java.util.List;
 
 public class MainApp extends Application {
@@ -29,15 +29,13 @@ public class MainApp extends Application {
     @Override
     public void start(Stage stage) {
 
-
         Editor editor = new Editor();
         Sidebar sidebar = new Sidebar(editor);
-        AppToolbar appToolbar = new AppToolbar();
+        AppToolbar appToolbar = new AppToolbar(editor);
 
 
         items = FXCollections.observableArrayList();
         refreshList(sidebar);
-
         sidebar.getNewBtn().setOnAction(e -> {
             editor.clear();
             System.out.println("📝 جاهز لكتابة ملاحظة جديدة!");
@@ -80,6 +78,7 @@ public class MainApp extends Application {
             stage.getIcons().add(icon);
         } catch (Exception e) {}
 
+
         Scene scene = new Scene (root, 900, 700);
         try {
             scene.getStylesheets().add(MainApp.class.getResource("/style.css").toExternalForm());
@@ -97,6 +96,7 @@ public class MainApp extends Application {
         }
         sidebar.bindNotes(items);
     }
+
 
     public static void main(String[] args) {
         launch(args);
