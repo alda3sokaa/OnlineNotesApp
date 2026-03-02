@@ -1,36 +1,79 @@
 package com.app.backend.models;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import java.time.Instant;
 
-import jakarta.persistence.*;//boot3 ise boot2 için javax
-
-@Entity //veritabanında tablo olacak  [
+@Entity
+@Table(name = "note_shares")
 public class NoteShare {
-	@Id //tablonun her satırı id num. alcak anahtarı olcak
-	@GeneratedValue(strategy=GenerationType.IDENTITY) //id'yi veritabanı otomatik üretsin (her yeni kayıtta 1 artarak üretir)
-private Long id;
-private Long noteId;
-private Long userId;
-@Enumerated(EnumType.STRING) //enumu nasıl yazacağını belirtir (yazı olarak kaydetsin)//olmazsa sayı olarak kaydeder
-private ShareRole  role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-public Long getId() {
-	return id;
-}
-public Long getNoteId() {
-	return noteId;
-}
-public void setNoteId(Long noteId) {
-	this.noteId=noteId;
-}
-public Long getUserId() {
-	return userId;
-}
-public void setUserId(Long userId) {
-	this.userId=userId;
-}
-public ShareRole getRole() {
-	return role;
-}
-public void setRole(ShareRole role) {
-	this.role=role;
-}
+    @NotNull
+    @Column(nullable = false)
+    private Long noteId;
+
+    @NotNull
+    @Column(nullable = false)
+    private Long sharedWithUserId;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ShareRole role;
+
+    @Column(nullable = false, updatable = false)
+    private Instant sharedAt;
+    
+    public NoteShare() {
+        this.sharedAt = Instant.now();
+    }
+    
+    public NoteShare(Long noteId, Long sharedWithUserId, ShareRole role) {
+        this.noteId = noteId;
+        this.sharedWithUserId = sharedWithUserId;
+        this.role = role;
+        this.sharedAt = Instant.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getNoteId() {
+        return noteId;
+    }
+
+    public void setNoteId(Long noteId) {
+        this.noteId = noteId;
+    }
+
+    public Long getSharedWithUserId() {
+        return sharedWithUserId;
+    }
+
+    public void setSharedWithUserId(Long sharedWithUserId) {
+        this.sharedWithUserId = sharedWithUserId;
+    }
+
+    public ShareRole getRole() {
+        return role;
+    }
+
+    public void setRole(ShareRole role) {
+        this.role = role;
+    }
+
+    public Instant getSharedAt() {
+        return sharedAt;
+    }
+    
+    public void setSharedAt(Instant sharedAt) {
+        this.sharedAt = sharedAt;
+    }
 }
