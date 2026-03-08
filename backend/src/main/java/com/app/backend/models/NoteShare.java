@@ -1,11 +1,18 @@
 package com.app.backend.models;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Entity
-@Table(name = "note_shares")
+@Table(
+    name = "note_shares",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"noteId", "sharedWithUserId"})
+    }
+)
 public class NoteShare {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,11 +32,11 @@ public class NoteShare {
 
     @Column(nullable = false, updatable = false)
     private Instant sharedAt;
-    
+
     public NoteShare() {
         this.sharedAt = Instant.now();
     }
-    
+
     public NoteShare(Long noteId, Long sharedWithUserId, ShareRole role) {
         this.noteId = noteId;
         this.sharedWithUserId = sharedWithUserId;
@@ -72,7 +79,7 @@ public class NoteShare {
     public Instant getSharedAt() {
         return sharedAt;
     }
-    
+
     public void setSharedAt(Instant sharedAt) {
         this.sharedAt = sharedAt;
     }

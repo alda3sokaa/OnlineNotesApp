@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
-
+import jakarta.persistence.Version;
 @Entity
 @Table(name = "notes")
 public class Note {
@@ -30,6 +30,7 @@ public class Note {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Version
     @Column(nullable = false)
     private int version;
 
@@ -103,7 +104,6 @@ public class Note {
     @PreUpdate
     void onUpdate() {
         this.updatedAt = Instant.now();
-        this.version += 1;
         if (this.title != null) {
             this.title = this.title.trim();
         }

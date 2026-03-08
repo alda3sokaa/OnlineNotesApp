@@ -15,7 +15,6 @@ public class PermissionsService {
         this.noteShareRepository = noteShareRepository;
     }
 
-
     public void checkViewPermission(Note note, Long userId) {
         if (note.getUserId().equals(userId)) return;
 
@@ -28,17 +27,24 @@ public class PermissionsService {
     public void checkEditPermission(Note note, Long userId) {
         if (note.getUserId().equals(userId)) return;
 
-        var shareRecord = noteShareRepository.findByNoteIdAndSharedWithUserId(note.getId(), userId)
+        var shareRecord = noteShareRepository
+                .findByNoteIdAndSharedWithUserId(note.getId(), userId)
                 .orElseThrow(() -> new UnauthorizedException("you do not have permission to edit this note"));
 
         if (shareRecord.getRole() != ShareRole.EDITOR) {
-            throw new UnauthorizedException("you only have permission to view the not , u cant edit it");
+            throw new UnauthorizedException("you only have permission to view the note, you can't edit it");
         }
     }
 
     public void checkDeletePermission(Note note, Long userId) {
         if (!note.getUserId().equals(userId)) {
-            throw new UnauthorizedException(" only the (Owner) can delete the note ");
+            throw new UnauthorizedException("only the owner can delete the note");
+        }
+    }
+
+    public void checkSharePermission(Note note, Long userId) {
+        if (!note.getUserId().equals(userId)) {
+            throw new UnauthorizedException("only the owner can share this note");
         }
     }
 }

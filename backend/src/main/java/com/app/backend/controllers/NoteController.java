@@ -9,40 +9,58 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/notes")
-public class NoteController {
 
-    private final NoteService noteService;
+	@RestController
+	@RequestMapping("/notes")
+	public class NoteController {
 
-    public NoteController(NoteService noteService) {
-        this.noteService = noteService;
-    }
+	    private final NoteService noteService;
 
-    @GetMapping
-    public ResponseEntity<List<Note>> getAllNotes(@RequestParam(required = false) Long userId) {
-        return ResponseEntity.ok(noteService.getAll(userId));
-    }
+	    public NoteController(NoteService noteService) {
+	        this.noteService = noteService;
+	    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
-        return ResponseEntity.ok(noteService.getById(id));
-    }
+	    @GetMapping
+	    public ResponseEntity<List<Note>> getAllNotes(@RequestParam(required = false) Long userId) {
+	        return ResponseEntity.ok(noteService.getAll(userId));
+	    }
 
-    @PostMapping
-    public ResponseEntity<Note> createNote(@RequestParam Long userId, @Valid @RequestBody Note note) {
-        Note createdNote = noteService.create(userId, note);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdNote);
-    }
+	    @GetMapping("/{id}")
+	    public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
+	        return ResponseEntity.ok(noteService.getById(id));
+	    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note note) {
-        return ResponseEntity.ok(noteService.update(id, note));
-    }
+	    @PostMapping
+	    public ResponseEntity<Note> createNote(@RequestParam Long userId, @Valid @RequestBody Note note) {
+	        Note createdNote = noteService.create(userId, note);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(createdNote);
+	    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
-        noteService.delete(id);
-        return ResponseEntity.noContent().build();
-    }
-}
+	    @PutMapping("/{id}")
+	    public ResponseEntity<Note> updateNote(@PathVariable Long id, @RequestBody Note note) {
+	        return ResponseEntity.ok(noteService.update(id, note));
+	    }
+
+	    @DeleteMapping("/{id}")
+	    public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
+	        noteService.delete(id);
+	        return ResponseEntity.noContent().build();
+	    }
+
+	    @PostMapping("/{id}/share")
+	    public ResponseEntity<NoteShare> shareNote(
+	            @PathVariable Long id,
+	            @RequestParam Long userId,
+	            @RequestParam Long sharedWithId,
+	            @RequestParam String role) {
+
+	        NoteShare share = noteService.shareNote(
+	                id,
+	                userId,
+	                sharedWithId,
+	                role
+	        );
+
+	        return ResponseEntity.status(HttpStatus.CREATED).body(share);
+	    }
+	}
