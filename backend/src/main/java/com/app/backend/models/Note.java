@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "notes")
@@ -24,6 +25,7 @@ public class Note {
     private Long userId;
 
     @NotBlank(message = "Title is required")
+    @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     @Column(nullable = false)
     private String title;
 
