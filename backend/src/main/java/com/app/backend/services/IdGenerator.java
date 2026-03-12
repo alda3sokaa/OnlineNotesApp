@@ -1,13 +1,15 @@
-package com.app.backend.services; //yanlış yazmış package ismini
+package com.app.backend.services;
+
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+@Component
 public class IdGenerator {
 
-    private AtomicLong counter = new AtomicLong(0); //neden AtomicLong
+    private final AtomicLong counter = new AtomicLong(0);
 
     public long generateId() {
         return counter.incrementAndGet();
     }
 }
-
