@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -44,5 +45,40 @@ public class NoteController {
     public ResponseEntity<Void> deleteNote(@PathVariable Long id) {
         noteService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/page")
+    public ResponseEntity<?> getUserNotesWithPagination(
+            @RequestParam Long userId,
+            @RequestParam int page,
+            @RequestParam int size) {
+
+        return ResponseEntity.ok(noteService.getUserNotes(userId, page, size));
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Note>> searchNotes(
+            @RequestParam Long userId,
+            @RequestParam String keyword) {
+
+        return ResponseEntity.ok(noteService.searchNotes(userId, keyword));
+    }
+
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<Note>> filterNotesByDate(
+            @RequestParam Long userId,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+
+        return ResponseEntity.ok(
+                noteService.getNotesBetweenDates(
+                        userId,
+                        LocalDateTime.parse(startDate),
+                        LocalDateTime.parse(endDate)
+                )
+        );
     }
 }
