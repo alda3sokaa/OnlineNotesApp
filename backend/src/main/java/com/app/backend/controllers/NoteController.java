@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/notes")
@@ -47,39 +47,20 @@ public class NoteController {
         return ResponseEntity.noContent().build();
     }
 
-
-    @GetMapping("/page")
-    public ResponseEntity<?> getUserNotesWithPagination(
+    @PostMapping("/{id}/share")
+    public ResponseEntity<NoteShare> shareNote(
+            @PathVariable Long id,
             @RequestParam Long userId,
-            @RequestParam int page,
-            @RequestParam int size) {
+            @RequestParam Long sharedWithId,
+            @RequestParam String role) {
 
-        return ResponseEntity.ok(noteService.getUserNotes(userId, page, size));
-    }
-
-
-    @GetMapping("/search")
-    public ResponseEntity<List<Note>> searchNotes(
-            @RequestParam Long userId,
-            @RequestParam String keyword) {
-
-        return ResponseEntity.ok(noteService.searchNotes(userId, keyword));
-    }
-
-
-    @GetMapping("/filter")
-    public ResponseEntity<List<Note>> filterNotesByDate(
-            @RequestParam Long userId,
-            @RequestParam String startDate,
-            @RequestParam String endDate) {
-
-        return ResponseEntity.ok(
-                noteService.getNotesBetweenDates(
-                        userId,
-                        LocalDateTime.parse(startDate),
-                        LocalDateTime.parse(endDate)
-                )
+        NoteShare share = noteService.shareNote(
+                id,
+                userId,
+                sharedWithId,
+                role
         );
-    }
 
+        return ResponseEntity.status(HttpStatus.CREATED).body(share);
+    }
 }
