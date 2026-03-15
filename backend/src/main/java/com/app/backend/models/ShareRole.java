@@ -1,4 +1,6 @@
 package com.app.backend.models;
 
-public class ShareRole {
+public enum ShareRole {
+    VIEWER,
+    EDITOR
 }
