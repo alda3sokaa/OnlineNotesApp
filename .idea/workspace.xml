@@ -5,7 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ef6cc9c8-f655-4b2d-aedb-e688e6e5b479" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/frontend/src/main/java/com/app/frontend/components/Sidebar.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main/java/com/app/frontend/components/Sidebar.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/fontawesomefx_8_9__1_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main/java/com/app/frontend/components/LoginView.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main/java/com/app/frontend/components/LoginView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main/java/com/app/frontend/components/RegisterView.java" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main/java/com/app/frontend/components/RegisterView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/main/resources/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/main/resources/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/NoteAppIcon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/MainApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/MainApp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/AppToolbar.class" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/AppToolbar.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/Editor.class" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/Editor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/NoteCard.class" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/NoteCard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/Sidebar$NoteItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/Sidebar$NoteItem.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/Sidebar.class" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/com/app/frontend/components/Sidebar.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/target/classes/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/target/classes/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,8 +38,8 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/alda3sokaa/OnlineNotesApp&quot;,
-    &quot;accountId&quot;: &quot;d8bab028-43d1-4e72-ac90-847741dcdb18&quot;
+    &quot;url&quot;: &quot;https://github.com/alda3sokaa/OnlineNotesApp.git&quot;,
+    &quot;accountId&quot;: &quot;92a5b5a8-9448-4fd5-9cf6-cec3de269a34&quot;
   }
 }</component>
   <component name="MavenImportPreferences">
@@ -86,6 +101,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
     <configuration name="BackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="backend" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.app.backend.BackendApplication" />
@@ -103,7 +127,6 @@
     <attachedChunks>
       <set>
         <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
       </set>
     </attachedChunks>
   </component>
@@ -122,6 +145,9 @@
       <workItem from="1771790275518" duration="2719000" />
       <workItem from="1771864481787" duration="714000" />
       <workItem from="1771948337465" duration="308000" />
+      <workItem from="1772487393868" duration="1268000" />
+      <workItem from="1772659601998" duration="25000" />
+      <workItem from="1773585516610" duration="56000" />
     </task>
     <servers />
   </component>

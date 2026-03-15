@@ -10,24 +10,31 @@ public class RegisterView extends VBox {
         setSpacing(15);
         setAlignment(Pos.CENTER);
 
-        Label title=new Label("Create Account");
+        this.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
 
+
+        this.getStyleClass().add("login-page");
+
+        Label title=new Label("Create Account");
         TextField usernameField=new TextField();
         usernameField.setPromptText("UserName");
         usernameField.setMaxWidth(200);
-
         TextField emailField=new TextField();
         emailField.setPromptText("Email");
         emailField.setMaxWidth(200);
-
         PasswordField passwordField = new PasswordField();
         passwordField.setPromptText("Password");
         passwordField.setMaxWidth(200);
 
+        usernameField.getStyleClass().add("login-field");
+        emailField.getStyleClass().add("login-field");
+        passwordField.getStyleClass().add("login-field");
+
         Button registerButton = new Button("Register");
+
+        registerButton.getStyleClass().add("login-button");
         Label errorLabel = new Label();
         registerButton.setOnAction(e -> {
-
             String username = usernameField.getText().trim();
             String email = emailField.getText().trim();
             String password = passwordField.getText().trim();
@@ -74,6 +81,7 @@ public class RegisterView extends VBox {
         getChildren().addAll(
                 title,usernameField,emailField,passwordField,registerButton,errorLabel,loginLink
         );
+
 
     }
 }

@@ -10,19 +10,24 @@ public  LoginView(Runnable onLoginSuccess) {
     setSpacing(15);
     setAlignment(Pos.CENTER);
 
-
+    this.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
+    this.getStyleClass().add("login-page");
     Label title=new Label("NoteTo");
+
+    title.getStyleClass().add("login-title");
 
     TextField usernameField=new TextField();
     usernameField.setPromptText("UserName");
+    usernameField.getStyleClass().add("login-field");
     usernameField.setMaxWidth(200);
 
     PasswordField passwordField=new PasswordField();
     passwordField.setPromptText("Password");
+    passwordField.getStyleClass().add("login-field");
     passwordField.setMaxWidth(200);
 
     Button loginButton=new Button("Login");
-
+    loginButton.getStyleClass().add("login-button");
     Label errorLabel = new Label();
     loginButton.setOnAction(e -> {
 
