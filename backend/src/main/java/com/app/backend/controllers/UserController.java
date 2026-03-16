@@ -13,11 +13,15 @@ public class UserController {
 
     private final UserService userService;
 
-
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
+        return ResponseEntity.ok(userService.login(email, password));
+    }
 
     @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
@@ -25,9 +29,11 @@ public class UserController {
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+        return ResponseEntity.ok(
+                userService.findById(id)
+                        .orElseThrow(() -> new RuntimeException("User not found with id: " + id))
+        );
     }
 }

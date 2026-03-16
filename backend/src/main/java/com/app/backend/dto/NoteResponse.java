@@ -1,5 +1,6 @@
 package com.app.backend.dto;
 
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import com.app.backend.models.Note;
@@ -9,7 +10,7 @@ public class NoteResponse {
     private Long userId;
     private String title;
     private String content;
-    private String createdAt; 
+    private String createdAt;
     private int version;
     private List<String> tags;
 
@@ -20,10 +21,11 @@ public class NoteResponse {
         this.content = note.getContent();
         this.version = note.getVersion();
         this.tags = note.getTags();
-        
+
         if (note.getCreatedAt() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-            this.createdAt = note.getCreatedAt().format(formatter);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                    .withZone(ZoneId.systemDefault());
+            this.createdAt = formatter.format(note.getCreatedAt());
         }
     }
 

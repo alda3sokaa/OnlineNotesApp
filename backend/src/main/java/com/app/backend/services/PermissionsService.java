@@ -16,35 +16,36 @@ public class PermissionsService {
     }
 
     public void checkViewPermission(Note note, Long userId) {
-        if (note.getUserId().equals(userId)) return;
+        // ضفنا حماية: لو الـ userId مو موجود، أو إذا كان هو المالك، بيمر
+        if (userId == null || note.getUserId().equals(userId)) return;
 
         boolean isShared = noteShareRepository.existsByNoteIdAndSharedWithUserId(note.getId(), userId);
         if (!isShared) {
-            throw new UnauthorizedException("you do not have permission to view this note");
+            throw new UnauthorizedException("You do not have permission to view this note.");
         }
     }
 
     public void checkEditPermission(Note note, Long userId) {
-        if (note.getUserId().equals(userId)) return;
+        if (userId == null || note.getUserId().equals(userId)) return;
 
         var shareRecord = noteShareRepository
                 .findByNoteIdAndSharedWithUserId(note.getId(), userId)
-                .orElseThrow(() -> new UnauthorizedException("you do not have permission to edit this note"));
+                .orElseThrow(() -> new UnauthorizedException("You do not have permission to edit this note."));
 
         if (shareRecord.getRole() != ShareRole.EDITOR) {
-            throw new UnauthorizedException("you only have permission to view the note, you can't edit it");
+            throw new UnauthorizedException("You only have permission to view the note, you can't edit it.");
         }
     }
 
     public void checkDeletePermission(Note note, Long userId) {
-        if (!note.getUserId().equals(userId)) {
-            throw new UnauthorizedException("only the owner can delete the note");
+        if (userId == null || !note.getUserId().equals(userId)) {
+            throw new UnauthorizedException("Only the owner can delete the note.");
         }
     }
 
     public void checkSharePermission(Note note, Long userId) {
-        if (!note.getUserId().equals(userId)) {
-            throw new UnauthorizedException("only the owner can share this note");
+        if (userId == null || !note.getUserId().equals(userId)) {
+            throw new UnauthorizedException("Only the owner can share this note.");
         }
     }
 }

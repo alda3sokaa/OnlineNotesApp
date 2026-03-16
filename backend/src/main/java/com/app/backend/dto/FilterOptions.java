@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 
 public class FilterOptions {
     private String search;
-    private long userId;
+    private Long userId;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+
     public String getSearch() {
         return search;
     }
@@ -15,11 +16,11 @@ public class FilterOptions {
         this.search = search;
     }
 
-    public String getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

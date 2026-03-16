@@ -13,4 +13,6 @@ public interface NoteShareRepository extends JpaRepository<NoteShare, Long> {
     Optional<NoteShare> findByNoteIdAndSharedWithUserId(Long noteId, Long sharedWithUserId);
     
     boolean existsByNoteIdAndSharedWithUserId(Long noteId, Long sharedWithUserId);
+
+    void deleteByNoteIdAndSharedWithUserId(Long noteId, Long sharedWithUserId);
 }

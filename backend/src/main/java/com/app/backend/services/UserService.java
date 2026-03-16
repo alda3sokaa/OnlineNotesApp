@@ -10,14 +10,23 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with this email"));
 
+        if (!user.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return user;
+    }
+
+    public User createUser(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
@@ -28,13 +37,21 @@ public class UserService {
 
         return userRepository.save(user);
     }
+    public User updateUser(Long id, User userDetails) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setUsername(userDetails.getUsername());
+        user.setEmail(userDetails.getEmail());
+        if (userDetails.getPassword() != null) {
+            user.setPassword(userDetails.getPassword());
+        }
+
+        return userRepository.save(user);
+    }
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
-    }
-
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
     }
 
     public List<User> findAll() {
@@ -42,11 +59,9 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-
         if (!userRepository.existsById(id)) {
             throw new RuntimeException("User not found");
         }
-
         userRepository.deleteById(id);
     }
 }

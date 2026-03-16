@@ -11,6 +11,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
+import java.util.List;
+
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -109,5 +111,14 @@ public class Note {
         if (this.title != null) {
             this.title = this.title.trim();
         }
+    }
+
+    private List<String> tags;
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 }
