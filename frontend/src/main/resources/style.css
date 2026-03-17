@@ -7,7 +7,7 @@
 }
 
 .button {
-    -fx-background-color: #1e1e1e;
+    -fx-background-color: #2d2d2d;
     -fx-text-fill: white;
 }
 
@@ -22,7 +22,7 @@
 }
 
 .sidebar-button {
-
+    -fx-background-color: transparent;
     -fx-cursor: hand;
     -fx-padding: 10;
 }
@@ -41,9 +41,75 @@
 }
 .tooltip {
     -fx-font-size: 14px;
-
+    -fx-background-color: #333333;
     -fx-text-fill: white;
     -fx-padding: 8 12 8 12;
 }
 
 
+
+.styled-text-area {
+    -fx-background-color: #1e1e1e;
+    -fx-control-inner-background: #1e1e1e;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+
+.styled-text-area .viewport {
+    -fx-background-color: #1e1e1e;
+}
+
+.styled-text-area .text {
+    -fx-fill: #ffffff;
+    -fx-font-size: 16px;
+}
+
+
+.styled-text-area .caret {
+    -fx-stroke: #ffffff;
+}
+
+
+.styled-text-area .selection {
+    -fx-fill: #34495e;
+}
+
+.login-page {
+    -fx-background-color: #1e1e1e;
+}
+
+.login-title {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+}
+
+.login-field {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #aaaaaa;
+}
+
+.login-button {
+    -fx-background-color: #3c3f41;
+    -fx-text-fill: white;
+}
+
+.login-button:hover {
+    -fx-background-color: #505357;
+}
+.hyperlink {
+    -fx-text-fill: #00aaff; /* link color */
+    -fx-border-color: transparent; /* hide */
+}
+
+.hyperlink:focused {
+    -fx-border-color: transparent;
+    -fx-underline: false; /* bottom line hide */
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #5865f2;
+    -fx-underline: true;
+}

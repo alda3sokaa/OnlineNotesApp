@@ -9,6 +9,8 @@ import com.app.backend.repositories.NoteRepository;
 import com.app.backend.repositories.NoteShareRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -123,7 +125,7 @@ public class NoteService {
         return noteRepository.findByUserIdAndTitleContainingIgnoreCase(userId, keyword);
     }
 
-    public java.util.List<Note> getNotesBetweenDates(Long userId, java.time.LocalDateTime start, java.time.LocalDateTime end) {
+    public List<Note> getNotesBetweenDates(Long userId, Instant start, Instant end) {
         return noteRepository.findByUserIdAndCreatedAtBetween(userId, start, end);
     }
 

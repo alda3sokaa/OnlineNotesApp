@@ -5,6 +5,8 @@ module com.app.frontend {
     requires com.fasterxml.jackson.databind;
     requires de.jensd.fx.glyphs.commons;
     requires de.jensd.fx.glyphs.fontawesome;
+    requires org.fxmisc.richtext;
+    requires com.google.gson;
 
 
     opens com.app.frontend to javafx.fxml;

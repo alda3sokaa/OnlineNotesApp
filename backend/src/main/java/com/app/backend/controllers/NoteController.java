@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -67,6 +68,7 @@ public class NoteController {
         return ResponseEntity.ok(noteService.searchNotes(userId, keyword));
     }
 
+
     @GetMapping("/filter")
     public ResponseEntity<List<Note>> filterNotesByDate(
             @RequestParam Long userId,
@@ -75,8 +77,8 @@ public class NoteController {
         return ResponseEntity.ok(
                 noteService.getNotesBetweenDates(
                         userId,
-                        LocalDateTime.parse(startDate),
-                        LocalDateTime.parse(endDate)
+                        Instant.parse(startDate),
+                        Instant.parse(endDate)
                 )
         );
     }

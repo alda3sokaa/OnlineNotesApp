@@ -1,6 +1,9 @@
 package com.app.frontend;
 
 import com.app.frontend.components.AppToolbar;
+
+import com.app.frontend.components.Editor;
+import com.app.frontend.components.LoginView;
 import com.app.frontend.components.Sidebar;
 import com.app.frontend.components.Editor;
 import com.app.frontend.models.NoteResponse;
@@ -23,16 +26,32 @@ public class MainApp extends Application {
 
     @Override
     public void init() throws Exception {
-        apiService = new MockNoteApiService();
+        apiService = new NoteApiService();
     }
-
     @Override
     public void start(Stage stage) {
 
 
+        LoginView loginView = new LoginView(() -> showMainApp(stage));
+        Scene scene = new Scene(loginView, 400, 400);
+
+        try {
+            Image icon = new Image(getClass().getResourceAsStream("/NoteAppIcon.png"));
+            stage.getIcons().add(icon);
+        } catch (Exception e) {}
+
+        stage.setTitle("NoteTo");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+    public void showMainApp(Stage stage) {
+
+
         Editor editor = new Editor();
         Sidebar sidebar = new Sidebar(editor);
-        AppToolbar appToolbar = new AppToolbar();
+        AppToolbar appToolbar = new AppToolbar(editor);
 
 
         items = FXCollections.observableArrayList();
@@ -40,7 +59,7 @@ public class MainApp extends Application {
 
         sidebar.getNewBtn().setOnAction(e -> {
             editor.clear();
-            System.out.println("📝 جاهز لكتابة ملاحظة جديدة!");
+            System.out.println("Ready to write a new note !!");
         });
 
         sidebar.getSaveBtn().setOnAction(e -> {
@@ -85,9 +104,11 @@ public class MainApp extends Application {
             scene.getStylesheets().add(MainApp.class.getResource("/style.css").toExternalForm());
         } catch (Exception e) {}
 
-        stage.setTitle("Notes Application");
+        stage.setTitle("NoteTo");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
+
     }
 
     private void refreshList(Sidebar sidebar) {

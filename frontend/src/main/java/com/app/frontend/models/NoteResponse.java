@@ -2,9 +2,9 @@ package com.app.frontend.models;
 
 public class NoteResponse {
 
-    private Long id;
-    private String title;
-    private String content;
+    public Long id;
+    public String title;
+    public String content;
 
     public NoteResponse() {
     }
@@ -14,7 +14,6 @@ public class NoteResponse {
         this.title = title;
         this.content = content;
     }
-
     public Long getId() {
         return id;
     }
