@@ -27,7 +27,14 @@ public class MainApp extends Application {
     public void start(Stage stage) {
         Runnable onAuthSuccess = () -> showMainApp(stage);
 
+        try {
+            Image icon = new Image(getClass().getResourceAsStream("/NoteAppIcon.png"));
+            if (!stage.getIcons().contains(icon)) {
+                stage.getIcons().add(icon);
+            }
+        } catch (Exception e){}
         showLoginScreen(stage, onAuthSuccess);
+
     }
 
     private void showLoginScreen(Stage stage, Runnable onAuthSuccess) {
@@ -86,6 +93,13 @@ public class MainApp extends Application {
         root.setCenter(editor.getView());
 
         Scene scene = new Scene(root, 1000, 700);
+        try {
+            Image icon = new Image(getClass().getResourceAsStream("/NoteAppIcon.png"));
+            if (!stage.getIcons().contains(icon)) {
+                stage.getIcons().add(icon);
+            }
+        } catch (Exception e){}
+
         try {
             scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         } catch (Exception e) {}
