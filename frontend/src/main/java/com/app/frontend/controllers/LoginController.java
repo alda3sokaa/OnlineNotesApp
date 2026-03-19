@@ -23,7 +23,7 @@ public class LoginController {
         String password = passwordField.getText();
 
         if (email.isEmpty() || password.isEmpty()) {
-            showAlert("خطأ", "الرجاء إدخال الإيميل وكلمة المرور!");
+            showAlert("Error", "Please enter both email and password!");
             return;
         }
 
@@ -34,7 +34,7 @@ public class LoginController {
 
 
         } catch (Exception e) {
-            showAlert("فشل تسجيل الدخول", e.getMessage());
+            showAlert("Login Failed", e.getMessage());
         }
     }
 
