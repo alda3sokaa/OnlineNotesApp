@@ -1,31 +1,27 @@
 package com.app.frontend.components;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.VBox;
-import javafx.scene.input.KeyCode;
 import javafx.application.Platform;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.geometry.Insets;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import java.util.Optional;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.geometry.Pos;
-import javafx.scene.layout.Priority;
+import org.fxmisc.richtext.InlineCssTextArea;
+
+import java.util.Optional;
 
 public class Editor {
     private javafx.scene.control.Label wordCountLabel;
-    private TextArea contentArea;
+    private InlineCssTextArea contentArea;
     private ScrollPane scrollPane;
     private VBox container;
     private TextField titleField;
+    private boolean isAutoBulletEnabled = false;
+    private String currentTextColor = "#ffffff";
+
 
     public Editor() {
         // 1. Address field setup (white and gray style)
@@ -44,7 +40,7 @@ public class Editor {
         );
 
         // 2. Content area setup (White style + Auto-bullet feature)
-        this.contentArea = new TextArea();
+        this.contentArea = new InlineCssTextArea();
         this.contentArea.setWrapText(true);
         this.contentArea.setPrefHeight(1000);
         this.contentArea.textProperty().addListener((obs, oldText, newText) -> {
@@ -54,20 +50,32 @@ public class Editor {
         this.contentArea.setStyle(
                 "-fx-font-size: 16px;" +
                         "-fx-text-fill: #ffffff;" +
-                        "-fx-control-inner-background: #1e1e1e;" +
+                        "-fx-control-inner-background: #ffffff;" +
                         "-fx-background-color: #1e1e1e;" +
                         "-fx-border-color: transparent;" +
                         "-fx-focus-color: transparent;" +
                         "-fx-faint-focus-color: transparent;"
+
         );
 
         //  Auto-insert '-' when pressing Enter
         this.contentArea.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
+            if (event.getCode() == KeyCode.ENTER && isAutoBulletEnabled) {
                 Platform.runLater(() -> {
                     int caretPosition = contentArea.getCaretPosition();
                     contentArea.insertText(caretPosition, "- ");
                 });
+            }
+        });
+
+        // تلوين الحروف الجديدة أثناء الكتابة
+        this.contentArea.setOnKeyTyped(event -> {
+            String text = event.getCharacter();
+            if (!text.isEmpty() && !text.equals("\b") && !text.equals("\r") && !text.equals("\n")) {
+                int pos = contentArea.getCaretPosition();
+                if (pos > 0) {
+                    contentArea.setStyle(pos - 1, pos, "-fx-fill: " + currentTextColor + ";");
+                }
             }
         });
 
@@ -89,7 +97,7 @@ public class Editor {
                         "-fx-viewport-background: #1e1e1e;"
         );
 
-        this.wordCountLabel = new javafx.scene.control.Label(" words : 0 ");
+        this.wordCountLabel = new Label(" words : 0 ");
         this.wordCountLabel.setStyle(
                 "-fx-text-fill: #7f8c8d;" +          // Set the text color to a calm gray to match the new design
                         "-fx-font-size: 11px;" +
@@ -99,20 +107,26 @@ public class Editor {
                         "-fx-padding: 5;"
         );
         //(Recommended)
-        javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane();
+        StackPane root = new StackPane();
 
         root.getChildren().addAll(container,wordCountLabel);
 
 
-        javafx.geometry.Pos position = Pos.BOTTOM_RIGHT;
-        javafx.scene.layout.StackPane.setAlignment(wordCountLabel,position);
+        Pos position = Pos.BOTTOM_RIGHT;
+        StackPane.setAlignment(wordCountLabel,position);
 
-        javafx.scene.layout.StackPane.setMargin(wordCountLabel, new javafx.geometry.Insets(0, 5, 5, 0));
-         this.scrollPane.setContent(root);
+        StackPane.setMargin(wordCountLabel, new Insets(0, 5, 5, 0));
+        this.scrollPane.setContent(root);
 
     }
 
     // // --- Logic Binding Methods (Getters & Setters) ---
+    //public InlineCssTextArea getTextArea() {
+    // return getTextArea();
+    //}
+    public InlineCssTextArea getTextArea() {
+        return contentArea;
+    }
 
     public ScrollPane getView() {
         return scrollPane;
@@ -128,7 +142,7 @@ public class Editor {
 
     public void setNote(String title, String content) {
         titleField.setText(title);
-        contentArea.setText(content);
+        contentArea.replaceText(content);
     }
 
     // 2. Update clear method to include word counter
@@ -144,6 +158,47 @@ public class Editor {
         alert.setHeaderText(null);
         alert.setContentText("Note saved successfully!"); // // Success Message
         alert.showAndWait();
+    }
+
+    // دالة تلوين النص المظلل
+    // دالة تلوين النص المظلل أو الجديد
+    public void applyColor(String hexColor) {
+        this.currentTextColor = hexColor; // حفظ اللون للكتابة الجديدة
+        IndexRange range = contentArea.getSelection();
+        if (range.getLength() > 0) {
+            contentArea.setStyle(range.getStart(), range.getEnd(), "-fx-fill: " + hexColor + ";");
+        }
+    }
+
+    public void setAutoBulletEnabled(boolean enabled) {
+        this.isAutoBulletEnabled = enabled;
+    }
+
+    public void insertTaskBox() {
+        int caretPosition = contentArea.getCaretPosition();
+        contentArea.insertText(caretPosition, "□ ");
+        contentArea.requestFocus(); // إرجاع المؤشر فوراً للمحرر
+    }
+
+    public void applyUnderLine(){
+        IndexRange range = contentArea.getSelection();
+        if (range.getLength() > 0) {
+            contentArea.setStyle(range.getStart(), range.getEnd(), "-fx-underline : true ; -fx-fill: " + currentTextColor + ";");
+        }
+    }
+
+    public void applyBold() {
+        IndexRange range = contentArea.getSelection();
+        if(range.getLength() > 0) {
+            contentArea.setStyle(range.getStart(), range.getEnd(), "-fx-font-weight: bold; -fx-fill: white;");
+        }
+    }
+
+    public void applyItalic() {
+        IndexRange range = contentArea.getSelection();
+        if(range.getLength() > 0) {
+            contentArea.setStyle(range.getStart(), range.getEnd(), "-fx-font-style: italic; -fx-fill: white;");
+        }
     }
 
     public boolean showDeleteConfirmation() {
@@ -173,7 +228,7 @@ public class Editor {
         Label teamLabel = new Label("Frontend:");
         teamLabel.setStyle("-fx-text-fill: #bdc3c7; -fx-font-size: 14px; -fx-font-weight: bold;");
 
-        Label membersLabel = new Label("1. Oubay Ajlouni \n2. Hassan Ibrahim\n3. Ale isa\n4. Sedra Sheıxh Alard\n5. Liwaa Alnassar\n6. Hadi\n7. Rayan ");
+        Label membersLabel = new Label("1. Oubay Ajlouni \n2. Hassan Ibrahim\n3. Ale isa\n4. Sedra\n5. Liwaa Alnassar\n6. Hadi\n7. Rayan ");
         membersLabel.setStyle("-fx-text-fill: #ecf0f1; -fx-font-size: 14px; -fx-line-spacing: 5;");
         membersLabel.setAlignment(Pos.CENTER);
 
@@ -188,6 +243,8 @@ public class Editor {
 
         aboutStage.show();
     }
+
+
     // 1. Add the method called by the Sidebar's Save button.
     public void saveNote() {
         // Check if the title exists before saving.

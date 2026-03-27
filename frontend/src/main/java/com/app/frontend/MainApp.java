@@ -1,17 +1,14 @@
 package com.app.frontend;
 
-import com.app.frontend.components.AppToolbar;
-import com.app.frontend.components.Sidebar;
-import com.app.frontend.components.Editor;
+import com.app.frontend.components.*;
 import com.app.frontend.models.NoteResponse;
-import com.app.frontend.services.MockNoteApiService;
 import com.app.frontend.services.NoteApiService;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import java.util.List;
@@ -23,37 +20,53 @@ public class MainApp extends Application {
 
     @Override
     public void init() throws Exception {
-        apiService = new MockNoteApiService();
+        this.apiService = new NoteApiService();
     }
 
     @Override
     public void start(Stage stage) {
+        Runnable onAuthSuccess = () -> showMainApp(stage);
 
+        showLoginScreen(stage, onAuthSuccess);
+    }
 
+    private void showLoginScreen(Stage stage, Runnable onAuthSuccess) {
+        LoginView loginView = new LoginView(onAuthSuccess);
+
+        loginView.getRegisterLink().setOnAction(e -> showRegisterScreen(stage, onAuthSuccess));
+
+        Scene scene = new Scene(loginView, 400, 400);
+        stage.setScene(scene);
+        stage.setTitle("NoteTo - Login");
+        stage.show();
+    }
+
+    private void showRegisterScreen(Stage stage, Runnable onAuthSuccess) {
+        RegisterView registerView = new RegisterView(onAuthSuccess);
+
+        registerView.getLoginLink().setOnAction(e -> showLoginScreen(stage, onAuthSuccess));
+
+        Scene scene = new Scene(registerView, 400, 450);
+        stage.setScene(scene);
+        stage.setTitle("NoteTo - Register");
+    }
+
+    public void showMainApp(Stage stage) {
         Editor editor = new Editor();
         Sidebar sidebar = new Sidebar(editor);
-        AppToolbar appToolbar = new AppToolbar();
-
+        AppToolbar appToolbar = new AppToolbar(editor);
 
         items = FXCollections.observableArrayList();
         refreshList(sidebar);
 
-        sidebar.getNewBtn().setOnAction(e -> {
-            editor.clear();
-            System.out.println("📝 جاهز لكتابة ملاحظة جديدة!");
-        });
+        sidebar.getNewBtn().setOnAction(e -> editor.clear());
 
         sidebar.getSaveBtn().setOnAction(e -> {
             String title = editor.getTitle();
             String content = editor.getContent();
-
             if (!title.isEmpty()) {
-                apiService.createNote(1L, title, content);
+                apiService.createNote(1L, title, content); // رح نعدل 1L لاحقاً
                 refreshList(sidebar);
-                editor.clear();
-                System.out.println("Saved successfully!");
-            } else {
-                System.out.println("Cannot save a note without a title!");
             }
         });
 
@@ -62,40 +75,37 @@ public class MainApp extends Application {
             for (NoteResponse note : allNotes) {
                 if (note.getId().toString().equals(noteId)) {
                     editor.setNote(note.getTitle(), note.getContent());
-                    System.out.println("Opened: " + note.getTitle());
                     break;
                 }
             }
         });
 
-        // UI DESIGN //
         BorderPane root = new BorderPane();
         root.setTop(appToolbar);
         root.setLeft(sidebar.getView());
         root.setCenter(editor.getView());
 
-        // APPLICATION ICON //
+        Scene scene = new Scene(root, 1000, 700);
         try {
-            Image icon = new Image(getClass().getResourceAsStream("/NoteAppIcon.png"));
-            stage.getIcons().add(icon);
+            scene.getStylesheets().add(getClass().getResource("/style.css").toExternalForm());
         } catch (Exception e) {}
 
-        Scene scene = new Scene (root, 900, 700);
-        try {
-            scene.getStylesheets().add(MainApp.class.getResource("/style.css").toExternalForm());
-        } catch (Exception e) {}
-
-        stage.setTitle("Notes Application");
         stage.setScene(scene);
-        stage.show();
+        stage.centerOnScreen();
+        stage.setTitle("NoteTo - Your Notes");
     }
 
     private void refreshList(Sidebar sidebar) {
-        items.clear();
-        for (NoteResponse note : apiService.getAllNotes()) {
-            items.add(new Sidebar.NoteItem(note.getId().toString(), note.getTitle()));
-        }
-        sidebar.bindNotes(items);
+        new Thread(() -> {
+            List<NoteResponse> notesFromServer = apiService.getAllNotes();
+            Platform.runLater(() -> {
+                items.clear();
+                for (NoteResponse note : notesFromServer) {
+                    items.add(new Sidebar.NoteItem(note.getId().toString(), note.getTitle()));
+                }
+                sidebar.bindNotes(items);
+            });
+        }).start();
     }
 
     public static void main(String[] args) {
